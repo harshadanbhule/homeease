@@ -53,16 +53,19 @@ class _SplashState extends State<Splash_2> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Finding and connecting with trusted local professionals around you.",
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.darkerGrotesque(
-                      color: Color.fromRGBO(224, 209, 240, 1),
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width-80,
+                    child: Text(
+                      "Finding and connecting with trusted local professionals around you.",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.darkerGrotesque(
+                        color: Color.fromRGBO(224, 209, 240, 1),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                   // Sign up button
                   GestureDetector(onTap: () {
                       Navigator.push(

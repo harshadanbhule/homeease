@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:homease/firebase_options.dart';
 import 'package:homease/info/Home.dart';
-import 'package:homease/info/Register.dart';
+
 import 'package:homease/info/form.dart';
-import 'package:homease/info/login.dart';
+
 import 'package:homease/login.dart';
 import 'package:homease/register.dart';
 import 'package:homease/splash.dart';

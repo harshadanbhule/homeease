@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:homease/info/location.dart';
 import 'package:latlong2/latlong.dart';
- // Make sure this matches your file path
-
-
+import 'package:homease/info/location.dart';
 
 class LocationPermissionPage extends StatefulWidget {
   final String firstName;
@@ -37,13 +34,11 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
     }
 
     if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
-      // Get current position
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
 
       LatLng currentPosition = LatLng(position.latitude, position.longitude);
 
-      // Navigate to map page
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -68,24 +63,65 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      appBar: AppBar(title: Text("Location Access")),
-      body: Center(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: BackButton(color: Colors.black),
+       
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: width * 0.08),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.location_on, size: 60, color: Colors.purple),
-            SizedBox(height: 20),
-            Text("We need access to your location", style: TextStyle(fontSize: 16)),
+            Icon(Icons.location_on, size: 80, color: Color(0xFF6216C7)),
+            SizedBox(height: 24),
+            Text(
+              "We need your location",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: Colors.black87),
+            ),
             SizedBox(height: 10),
-            Text(_status, textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)),
-            SizedBox(height: 30),
+            Text(
+              "This helps us show better options based on your current location.",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+            ),
+            SizedBox(height: 16),
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.info_outline, size: 18, color: Colors.grey),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _status,
+                      style: TextStyle(fontSize: 13, color: Colors.black87),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 32),
             ElevatedButton(
               onPressed: _checkPermission,
-              child: Text("Allow Access"),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF6216C7),
+                minimumSize: Size(width * 0.85, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28),
+                ),
               ),
+              child: Text("Allow Access", style: TextStyle(fontSize: 16, color: Colors.white)),
             ),
           ],
         ),

@@ -40,8 +40,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             },
             children: const [
               page_1(),
-              page_2(),
-              page_3(),
+              Page_2(),
+              Page_3(),
             ],
           ),
 

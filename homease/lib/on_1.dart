@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For SystemChrome
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class page_1 extends StatelessWidget {
@@ -43,7 +45,9 @@ class _Page1State extends State<Page1> {
                 width: 80,
                 decoration: const BoxDecoration(
                   color: Color.fromRGBO(255, 202, 202, 1),
-                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(100)),
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(100),
+                  ),
                 ),
               ),
             ),
@@ -56,7 +60,9 @@ class _Page1State extends State<Page1> {
                 width: 80,
                 decoration: const BoxDecoration(
                   color: Color.fromRGBO(255, 202, 202, 1),
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(100)),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(100),
+                  ),
                 ),
               ),
             ),
@@ -68,33 +74,37 @@ class _Page1State extends State<Page1> {
                 children: [
                   // Adjust vertical space
                   SizedBox(
-                    height: MediaQuery.sizeOf(context).height - 250,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(top: 150),
-                          child: Image(
-                            image: AssetImage("assets/onboarding/Group 34489 (1).png"),
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(200),
-                          child: Image.asset(
-                            "assets/onboarding/new_image.png",
-                            fit: BoxFit.cover,
-                            filterQuality: FilterQuality.high,
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 180),
-                          child: Image(
-                            image: AssetImage(
-                              'assets/onboarding/Group 34487.png',
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 0),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 150),
+                            child: SvgPicture.asset(
+                              "assets/svg_images/Group 34611.svg",
+                              height: 300,
+                              width: 300,
                             ),
                           ),
-                        ),
-                      ],
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(200),
+                            child: Image.asset(
+                              "assets/onboarding/new_image.png",
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.high,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 180),
+                            child: SvgPicture.asset(
+                              "assets/svg_images/Group 34487.svg",
+                              height: 300,
+                              width: 300,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
 
@@ -113,15 +123,17 @@ class _Page1State extends State<Page1> {
 
                   const SizedBox(height: 10),
 
-                  // Optional Description Text
-                  // SizedBox(
-                  //   width: MediaQuery.sizeOf(context).width - 30,
-                  //   child: Text(
-                  //     "Experience salon-quality beauty treatments in the comfort of your own home.",
-                  //     textAlign: TextAlign.center,
-                  //     style: GoogleFonts.interTight(fontSize: 15, fontWeight: FontWeight.w400),
-                  //   ),
-                  // ),
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width - 30,
+                    child: Text(
+                      "Experience salon-quality beauty treatments in the comfort of your own home.",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.interTight(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

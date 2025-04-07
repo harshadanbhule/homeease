@@ -224,10 +224,11 @@ class _UserFormPageState extends State<UserFormPage> {
                 validator: (phone) =>
                     phone == null || phone.number.isEmpty ? 'Enter Phone Number' : null,
               ),
-              SizedBox(height: 24),
+              SizedBox(height: 70),
               GestureDetector(
                 onTap: _showPolicyDialog,
                 child: Container(
+                  height: 72,
                   padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: Colors.grey.shade100,
@@ -241,7 +242,7 @@ class _UserFormPageState extends State<UserFormPage> {
                         TextSpan(
                           text: "terms of service, Payment Terms of Service & Privacy Policy.",
                           style: TextStyle(
-                            decoration: TextDecoration.underline,
+                            //decoration: TextDecoration.underline,
                             color: Colors.blueAccent,
                           ),
                         ),
@@ -250,7 +251,7 @@ class _UserFormPageState extends State<UserFormPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 32),
+              SizedBox(height: 62),
               Center(
                 child: ElevatedButton(
                   onPressed: _submitForm,

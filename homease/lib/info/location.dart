@@ -157,7 +157,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
 
                 // Confirm button
                 Positioned(
-                  bottom: 30,
+                  bottom: 80,
                   left: 20,
                   right: 20,
                   child: ElevatedButton(
@@ -175,6 +175,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
                     ),
                   ),
                 ),
+               
               ],
             ),
     );
