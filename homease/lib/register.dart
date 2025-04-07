@@ -1,10 +1,25 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // <-- ADD THIS
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:homease/login.dart';
+ 
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
   const Register({super.key});
+
+  @override
+  State<Register> createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +54,7 @@ class Register extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               SizedBox(
-                width: MediaQuery.sizeOf(context).width-50,
+                width: MediaQuery.sizeOf(context).width - 50,
                 child: Text(
                   "Create an account so you can explore all the available services",
                   textAlign: TextAlign.center,
@@ -51,23 +66,15 @@ class Register extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-
-              // Username Field
-              buildTextField(context,hintText: "UserName"),
+              buildTextField(context, hintText: "UserName"),
               const SizedBox(height: 20),
-
-              // Email Field
-              buildTextField(context,hintText: "Email"),
+              buildTextField(context, hintText: "Email"),
               const SizedBox(height: 20),
-
-              // Password Field
-              buildTextField(context,hintText: "Password", obscureText: true),
+              buildTextField(context, hintText: "Password", obscureText: true),
               const SizedBox(height: 30),
-
-              // Sign Up Button
               SizedBox(
                 height: 60,
-                width: MediaQuery.sizeOf(context).width-50,
+                width: MediaQuery.sizeOf(context).width - 50,
                 child: ElevatedButton(
                   onPressed: () {
                     // Handle sign up
@@ -89,18 +96,16 @@ class Register extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 40),
-
               GestureDetector(
                 onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Login(),
-                        ),
-                      );
-                    },
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Login(),
+                    ),
+                  );
+                },
                 child: Text(
                   "Already have an account",
                   style: GoogleFonts.poppins(
@@ -110,9 +115,7 @@ class Register extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 40),
-
               Text(
                 "Or continue with",
                 style: GoogleFonts.poppins(
@@ -121,9 +124,7 @@ class Register extends StatelessWidget {
                   color: const Color.fromRGBO(103, 89, 255, 1),
                 ),
               ),
-
               const SizedBox(height: 20),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -142,11 +143,9 @@ class Register extends StatelessWidget {
     );
   }
 
-  // Reusable Input Field
-  Widget buildTextField(
-  BuildContext context, {
-  required String hintText,
-  bool obscureText = false,}) {
+  // Reusable input field
+  Widget buildTextField(BuildContext context,
+      {required String hintText, bool obscureText = false}) {
     return SizedBox(
       height: 55,
       width: MediaQuery.sizeOf(context).width - 50,
@@ -157,16 +156,14 @@ class Register extends StatelessWidget {
           fillColor: const Color.fromRGBO(241, 244, 255, 1),
           hintText: hintText,
           hintStyle: GoogleFonts.poppins(fontSize: 14),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 17),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 25, vertical: 17),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(
-              width: 2,
-              color: Colors.white,
-            ),
+            borderSide: const BorderSide(width: 2, color: Colors.white),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),

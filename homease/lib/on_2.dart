@@ -62,7 +62,7 @@ class _Page2State extends State<Page2> {
                   
                   
                   SizedBox(
-                    height: MediaQuery.sizeOf(context).height-180,
+                    height: MediaQuery.sizeOf(context).height-250,
                     child: Stack(
                       alignment: Alignment.center,
                       children: [

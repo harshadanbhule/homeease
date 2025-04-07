@@ -68,7 +68,7 @@ class _Page1State extends State<Page1> {
                 children: [
                   // Adjust vertical space
                   SizedBox(
-                    height: MediaQuery.sizeOf(context).height - 180,
+                    height: MediaQuery.sizeOf(context).height - 250,
                     child: Stack(
                       alignment: Alignment.center,
                       children: [

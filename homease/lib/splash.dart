@@ -28,12 +28,7 @@ class _SplashState extends State<Splash> {
     });
   }
 
-  @override
-  void dispose() {
-    // Restore status/navigation bars when leaving splash screen
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    super.dispose();
-  }
+   
 
   @override
   Widget build(BuildContext context) {
