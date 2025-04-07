@@ -1,10 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // <-- ADD THIS
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:homease/login.dart';
- 
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -14,11 +14,50 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  }
 
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _registerUser() async {
+    String username = _usernameController.text.trim();
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    if (username.isEmpty || email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill in all fields")),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Registered Successfully")),
+      );
+
+      Navigator.pushReplacementNamed(context, '/login');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${e.toString()}")),
+      );
+    }
   }
 
   @override
@@ -66,19 +105,17 @@ class _RegisterState extends State<Register> {
                 ),
               ),
               const SizedBox(height: 30),
-              buildTextField(context, hintText: "UserName"),
+              buildTextField(context, controller: _usernameController, hintText: "UserName"),
               const SizedBox(height: 20),
-              buildTextField(context, hintText: "Email"),
+              buildTextField(context, controller: _emailController, hintText: "Email"),
               const SizedBox(height: 20),
-              buildTextField(context, hintText: "Password", obscureText: true),
+              buildTextField(context, controller: _passwordController, hintText: "Password", obscureText: true),
               const SizedBox(height: 30),
               SizedBox(
                 height: 60,
                 width: MediaQuery.sizeOf(context).width - 50,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Handle sign up
-                  },
+                  onPressed: _registerUser,
                   style: ElevatedButton.styleFrom(
                     elevation: 10,
                     backgroundColor: const Color.fromRGBO(100, 27, 180, 1),
@@ -99,11 +136,9 @@ class _RegisterState extends State<Register> {
               const SizedBox(height: 40),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const Login(),
-                    ),
+                    MaterialPageRoute(builder: (context) => const Login()),
                   );
                 },
                 child: Text(
@@ -143,21 +178,20 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  // Reusable input field
   Widget buildTextField(BuildContext context,
-      {required String hintText, bool obscureText = false}) {
+      {required TextEditingController controller, required String hintText, bool obscureText = false}) {
     return SizedBox(
       height: 55,
       width: MediaQuery.sizeOf(context).width - 50,
       child: TextFormField(
+        controller: controller,
         obscureText: obscureText,
         decoration: InputDecoration(
           filled: true,
           fillColor: const Color.fromRGBO(241, 244, 255, 1),
           hintText: hintText,
           hintStyle: GoogleFonts.poppins(fontSize: 14),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 25, vertical: 17),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 17),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
           ),
@@ -177,7 +211,6 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  // Reusable Social Icon Widget
   Widget socialIcon(String assetPath) {
     return GestureDetector(
       onTap: () {
