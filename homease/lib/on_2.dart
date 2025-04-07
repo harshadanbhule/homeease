@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
-
-class page_2 extends StatelessWidget {
-  const page_2({super.key});
+class Page_2 extends StatelessWidget {
+  const Page_2({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Page2(),
-    );
+    return const MaterialApp(debugShowCheckedModeBanner: false, home: Page2());
   }
 }
 
@@ -29,7 +25,7 @@ class _Page2State extends State<Page2> {
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            // Container at the top-left corner
+            // Top-left decoration
             Positioned(
               top: 1,
               left: 1,
@@ -38,10 +34,13 @@ class _Page2State extends State<Page2> {
                 width: 80,
                 decoration: const BoxDecoration(
                   color: Color.fromRGBO(255, 202, 202, 1),
-                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(100)),
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(100),
+                  ),
                 ),
               ),
             ),
+            // Top-right decoration
             Positioned(
               top: 1,
               right: 1,
@@ -50,63 +49,77 @@ class _Page2State extends State<Page2> {
                 width: 80,
                 decoration: const BoxDecoration(
                   color: Color.fromRGBO(255, 202, 202, 1),
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(100)),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(100),
+                  ),
                 ),
               ),
             ),
-            // Center content
+
+            // Main content
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  
-                  
                   SizedBox(
-                    height: MediaQuery.sizeOf(context).height-250,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(top: 150),
-                          child: Image(
-                            image: AssetImage("assets/onboarding/Group 34489 (2).png"),
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(200),
-                          child: Image.asset(
-                            "assets/onboarding/new_image_2.png",
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 180),
-                          child: Image(
-                            image: AssetImage(
-                              'assets/onboarding/Group 34487 (1).png',
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 0),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 150),
+                            child: SvgPicture.asset(
+                              "assets/svg_images/Group 34607.svg",
                             ),
                           ),
-                        ),
-                      ],
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(200),
+                            child: Image.asset(
+                              "assets/onboarding/new_image_2.png",
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.high,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 180),
+                            child: SvgPicture.asset(
+                              'assets/svg_images/Group 34487_2.svg',
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  
+
+                  // Headline
                   Container(
-                    alignment: Alignment(0,0.1),
                     height: 115,
                     width: 300,
-                    child: Text("Plumber & expert nearby you",
-                    textAlign: TextAlign.center ,
-                    style: GoogleFonts.interTight(fontWeight: FontWeight.bold,fontSize: 32),),
+                    child: Text(
+                      "Plumber & expert nearby you",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.interTight(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 32,
+                      ),
+                    ),
                   ),
-                  SizedBox(height: 10),
-                  // SizedBox(
-                  //   width: MediaQuery.sizeOf(context).width-30,
-                  //   child: Text(textAlign: TextAlign.center,"Find trusted plumbers and experts near you for quick and reliable service.",style: GoogleFonts.interTight(fontSize: 15,fontWeight: FontWeight.w400),),
-                  // ),
-                  
-                  SizedBox(height: 100),                
-                  
+
+                  const SizedBox(height: 10),
+
+                  // Subtext
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width - 30,
+                    child: Text(
+                      "Find trusted plumbers and experts near you for quick and reliable service.",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.interTight(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

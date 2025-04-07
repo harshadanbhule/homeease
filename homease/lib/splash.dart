@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:homease/onboarding_screen.dart';
 
 class Splash extends StatefulWidget {
@@ -21,7 +23,7 @@ class _SplashState extends State<Splash> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
     // Trigger animations after a short delay
-    Future.delayed(const Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       setState(() {
         animate = true;
       });
@@ -59,7 +61,12 @@ class _SplashState extends State<Splash> {
           ),
 
           // Center logo/image
-          Image.asset("assets/splash/image.png", height: 200),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset("assets/splash/home_logo.svg"),
+              Text("HOMEEASE",style: GoogleFonts.robotoCondensed(fontSize: 48,fontWeight: FontWeight.w700,color: Colors.white),)
+          ],),
 
           // Bottom row
           Row(
@@ -73,7 +80,7 @@ class _SplashState extends State<Splash> {
               AnimatedSlide(
                 offset: animate ? Offset.zero : const Offset(1.5, 1),
                 duration: const Duration(milliseconds: 800),
-                child: Image.asset("assets/splash/image 4.png"),
+                child: Image.asset("assets/onboarding/image 4.png"),
               ),
             ],
           ),
