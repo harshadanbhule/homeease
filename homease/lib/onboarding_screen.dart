@@ -47,7 +47,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
           // Page Indicator
           Container(
-            alignment: const Alignment(0, 0.70),
+            alignment: const Alignment(0, 0.7),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

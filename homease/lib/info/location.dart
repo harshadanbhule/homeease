@@ -127,7 +127,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
                               children: [
                                 Text(_address, style: TextStyle(fontWeight: FontWeight.w600)),
                                 SizedBox(height: 4),
-                                Text("Lagos, Nigeria", style: TextStyle(color: Colors.grey[700]))
+                               // Text("Lagos, Nigeria", style: TextStyle(color: Colors.grey[700]))
                               ],
                             ),
                           )
@@ -137,7 +137,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
                   ),
                 ),
                 Positioned(
-                  bottom: 30,
+                  bottom: 60,
                   left: 20,
                   right: 20,
                   child: ElevatedButton(

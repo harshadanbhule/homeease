@@ -123,17 +123,21 @@ class _Page1State extends State<Page1> {
 
                   const SizedBox(height: 10),
 
-                  SizedBox(
-                    width: MediaQuery.sizeOf(context).width - 30,
-                    child: Text(
-                      "Experience salon-quality beauty treatments in the comfort of your own home.",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.interTight(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 300),
+                    child: SizedBox(
+                      width: MediaQuery.sizeOf(context).width - 30,
+                      child: Text(
+                        "Experience salon-quality beauty treatments in the comfort of your own home.",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.interTight(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
                   ),
+                  
                 ],
               ),
             ),

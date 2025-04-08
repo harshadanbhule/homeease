@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:homease/DataBase/user_location_model.dart';
-import 'package:homease/info/location_summary.dart';
+import 'package:homease/info/Home.dart';
 import 'package:latlong2/latlong.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LocationDetailsPage extends StatefulWidget {
   final String address;
@@ -34,8 +35,17 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
   final _streetController = TextEditingController();
   bool _setAsHome = false;
 
-  void _save() {
+  Future<void> _save() async {
     if (_formKey.currentState!.validate()) {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("User not logged in")),
+        );
+        return;
+      }
+
       final userLocation = UserLocationModel(
         firstName: widget.firstName,
         lastName: widget.lastName,
@@ -43,17 +53,48 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
         address: widget.address,
         coordinates: widget.coordinates,
         building: _buildingController.text,
-        apartment: _apartmentController.text.isEmpty ? null : _apartmentController.text,
+        apartment: _apartmentController.text.isEmpty
+            ? null
+            : _apartmentController.text,
         street: _streetController.text,
         isHome: _setAsHome,
       );
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LocationSummaryPage(userLocation: userLocation),
-        ),
-      );
+      final locationData = {
+        'firstName': userLocation.firstName,
+        'lastName': userLocation.lastName,
+        'phoneNumber': userLocation.phoneNumber,
+        'address': userLocation.address,
+        'coordinates': {
+          'latitude': userLocation.coordinates.latitude,
+          'longitude': userLocation.coordinates.longitude,
+        },
+        'building': userLocation.building,
+        'apartment': userLocation.apartment,
+        'street': userLocation.street,
+        'isHome': userLocation.isHome,
+      };
+
+      try {
+        await FirebaseFirestore.instance
+            .collection('user_locations')
+            .doc(user.uid)
+            .set(locationData);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Location saved to Firestore!")),
+        );
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+          (route) => false,
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to save: $e")),
+        );
+      }
     }
   }
 
@@ -110,8 +151,6 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
               ),
             ),
             const SizedBox(height: 16),
-
-            // Map Preview
             SizedBox(
               height: 160,
               child: ClipRRect(
@@ -123,7 +162,8 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
                   ),
                   children: [
                     TileLayer(
-                      urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                       userAgentPackageName: 'com.example.app',
                     ),
                     MarkerLayer(
@@ -132,7 +172,8 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
                           point: widget.coordinates,
                           width: 40,
                           height: 40,
-                          child: Icon(Icons.location_pin, size: 40, color: Colors.red),
+                          child: Icon(Icons.location_pin,
+                              size: 40, color: Colors.red),
                         ),
                       ],
                     ),
@@ -140,10 +181,7 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
                 ),
               ),
             ),
-
             const SizedBox(height: 20),
-
-            // Building
             TextFormField(
               controller: _buildingController,
               decoration: InputDecoration(
@@ -152,17 +190,18 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
                     text: 'Building',
                     style: GoogleFonts.poppins(color: Colors.black),
                     children: const [
-                      TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
+                      TextSpan(
+                          text: ' *', style: TextStyle(color: Colors.red)),
                     ],
                   ),
                 ),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12)),
               ),
-              validator: (value) => value == null || value.isEmpty ? "Building is required" : null,
+              validator: (value) =>
+                  value == null || value.isEmpty ? "Building is required" : null,
             ),
             const SizedBox(height: 16),
-
-            // Apartment & Floor
             Row(
               children: [
                 Expanded(
@@ -171,7 +210,8 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
                     decoration: InputDecoration(
                       labelText: "Apartment",
                       labelStyle: GoogleFonts.poppins(),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
                     ),
                   ),
                 ),
@@ -182,15 +222,14 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
                     decoration: InputDecoration(
                       labelText: "Floor",
                       labelStyle: GoogleFonts.poppins(),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
                     ),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 16),
-
-            // Street
             TextFormField(
               controller: _streetController,
               decoration: InputDecoration(
@@ -199,17 +238,18 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
                     text: 'Street',
                     style: GoogleFonts.poppins(color: Colors.black),
                     children: const [
-                      TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
+                      TextSpan(
+                          text: ' *', style: TextStyle(color: Colors.red)),
                     ],
                   ),
                 ),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12)),
               ),
-              validator: (value) => value == null || value.isEmpty ? "Street is required" : null,
+              validator: (value) =>
+                  value == null || value.isEmpty ? "Street is required" : null,
             ),
             const SizedBox(height: 12),
-
-            // Set as current address
             Row(
               children: [
                 Checkbox(
@@ -226,10 +266,7 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
                 ),
               ],
             ),
-
             const SizedBox(height: 30),
-
-            // Save Button
             ElevatedButton(
               onPressed: _save,
               style: ElevatedButton.styleFrom(
@@ -247,7 +284,6 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
                 ),
               ),
             ),
-
             const SizedBox(height: 20),
           ],
         ),
