@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:homease/info/location.dart';
+import 'package:latlong2/latlong.dart';
+
 
 class LocationPermissionPage extends StatefulWidget {
   final String firstName;
@@ -36,7 +37,6 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
     if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-
       LatLng currentPosition = LatLng(position.latitude, position.longitude);
 
       Navigator.pushReplacement(
@@ -71,7 +71,6 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: BackButton(color: Colors.black),
-       
         centerTitle: true,
       ),
       body: Padding(

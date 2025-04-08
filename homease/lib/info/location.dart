@@ -4,6 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:homease/info/locationdetail.dart';
 import 'package:latlong2/latlong.dart';
 
+
 class LocationMapPage extends StatefulWidget {
   final String firstName;
   final String lastName;
@@ -40,8 +41,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
       );
       Placemark place = placemarks[0];
       setState(() {
-        _address =
-            "${place.name}, ${place.street}, ${place.locality}";
+        _address = "${place.name}, ${place.street}, ${place.locality}";
       });
     } catch (e) {
       setState(() {
@@ -100,25 +100,14 @@ class _LocationMapPageState extends State<LocationMapPage> {
                     ),
                   ],
                 ),
-
-                // App bar
                 Positioned(
-                  top: 50,
+                  top: 20,
                   left: 16,
-                  right: 16,
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back, color: Colors.black),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 8),
-                     
-                    ],
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.black),
+                    onPressed: () => Navigator.pop(context),
                   ),
                 ),
-
-                // Address card
                 Positioned(
                   top: 100,
                   left: 20,
@@ -129,7 +118,6 @@ class _LocationMapPageState extends State<LocationMapPage> {
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Icon(Icons.location_on_outlined, color: Colors.black54),
                           SizedBox(width: 12),
@@ -137,15 +125,9 @@ class _LocationMapPageState extends State<LocationMapPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  _address,
-                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                ),
+                                Text(_address, style: TextStyle(fontWeight: FontWeight.w600)),
                                 SizedBox(height: 4),
-                                Text(
-                                  "Lagos, Nigeria",
-                                  style: TextStyle(color: Colors.grey[700]),
-                                )
+                                Text("Lagos, Nigeria", style: TextStyle(color: Colors.grey[700]))
                               ],
                             ),
                           )
@@ -154,10 +136,8 @@ class _LocationMapPageState extends State<LocationMapPage> {
                     ),
                   ),
                 ),
-
-                // Confirm button
                 Positioned(
-                  bottom: 80,
+                  bottom: 30,
                   left: 20,
                   right: 20,
                   child: ElevatedButton(
@@ -171,11 +151,10 @@ class _LocationMapPageState extends State<LocationMapPage> {
                     ),
                     child: Text(
                       "Confirm location",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,color: Colors.white),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
                     ),
                   ),
                 ),
-               
               ],
             ),
     );

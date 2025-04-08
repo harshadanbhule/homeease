@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:homease/DataBase/user_location_model.dart';
 import 'package:homease/info/location_summary.dart';
 import 'package:latlong2/latlong.dart';
@@ -9,15 +11,16 @@ class LocationDetailsPage extends StatefulWidget {
   final LatLng coordinates;
   final String firstName;
   final String lastName;
-  final String phoneNumber; // changed from email
+  final String phoneNumber;
 
-  LocationDetailsPage({
+  const LocationDetailsPage({
+    Key? key,
     required this.address,
     required this.coordinates,
     required this.firstName,
     required this.lastName,
-    required this.phoneNumber, // changed from email
-  });
+    required this.phoneNumber,
+  }) : super(key: key);
 
   @override
   State<LocationDetailsPage> createState() => _LocationDetailsPageState();
@@ -25,23 +28,24 @@ class LocationDetailsPage extends StatefulWidget {
 
 class _LocationDetailsPageState extends State<LocationDetailsPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController buildingController = TextEditingController();
-  final TextEditingController apartmentController = TextEditingController();
-  final TextEditingController streetController = TextEditingController();
-  bool isHome = false;
+  final _buildingController = TextEditingController();
+  final _apartmentController = TextEditingController();
+  final _floorController = TextEditingController();
+  final _streetController = TextEditingController();
+  bool _setAsHome = false;
 
   void _save() {
     if (_formKey.currentState!.validate()) {
       final userLocation = UserLocationModel(
         firstName: widget.firstName,
         lastName: widget.lastName,
-        phoneNumber: widget.phoneNumber, // updated field
+        phoneNumber: widget.phoneNumber,
         address: widget.address,
         coordinates: widget.coordinates,
-        building: buildingController.text,
-        apartment: apartmentController.text.isEmpty ? null : apartmentController.text,
-        street: streetController.text,
-        isHome: isHome,
+        building: _buildingController.text,
+        apartment: _apartmentController.text.isEmpty ? null : _apartmentController.text,
+        street: _streetController.text,
+        isHome: _setAsHome,
       );
 
       Navigator.push(
@@ -56,74 +60,195 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Location Details")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
+      backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80),
+        child: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 25.0, left: 10),
+            child: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
+          title: Padding(
+            padding: const EdgeInsets.only(top: 25.0),
+            child: Text(
+              "Confirm your home address",
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          centerTitle: true,
+        ),
+      ),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           children: [
-            Text("Confirmed Address:", style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            Text(widget.address, style: TextStyle(fontSize: 16)),
-            SizedBox(height: 20),
-            Form(
-              key: _formKey,
-              child: Expanded(
-                child: ListView(
+            const SizedBox(height: 12),
+            Text(
+              "Additional information",
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              widget.address,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Map Preview
+            SizedBox(
+              height: 160,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: FlutterMap(
+                  options: MapOptions(
+                    center: widget.coordinates,
+                    zoom: 16.5,
+                  ),
                   children: [
-                    TextFormField(
-                      controller: buildingController,
-                      decoration: InputDecoration(
-                        labelText: "Building *",
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) => value == null || value.isEmpty ? "Building is required" : null,
+                    TileLayer(
+                      urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      userAgentPackageName: 'com.example.app',
                     ),
-                    SizedBox(height: 10),
-                    TextFormField(
-                      controller: apartmentController,
-                      decoration: InputDecoration(
-                        labelText: "Apartment/Floor (optional)",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    TextFormField(
-                      controller: streetController,
-                      decoration: InputDecoration(
-                        labelText: "Street *",
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) => value == null || value.isEmpty ? "Street is required" : null,
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: isHome,
-                          onChanged: (val) {
-                            setState(() {
-                              isHome = val!;
-                            });
-                          },
-                          shape: CircleBorder(),
+                    MarkerLayer(
+                      markers: [
+                        Marker(
+                          point: widget.coordinates,
+                          width: 40,
+                          height: 40,
+                          child: Icon(Icons.location_pin, size: 40, color: Colors.red),
                         ),
-                        Text("Set as Current Home Location")
                       ],
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton.icon(
-                      onPressed: _save,
-                      icon: Icon(Icons.save),
-                      label: Text("Save"),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 50),
-                        textStyle: TextStyle(fontSize: 18),
-                      ),
                     ),
                   ],
                 ),
               ),
             ),
+
+            const SizedBox(height: 20),
+
+            // Building
+            TextFormField(
+              controller: _buildingController,
+              decoration: InputDecoration(
+                label: RichText(
+                  text: TextSpan(
+                    text: 'Building',
+                    style: GoogleFonts.poppins(color: Colors.black),
+                    children: const [
+                      TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
+                    ],
+                  ),
+                ),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              validator: (value) => value == null || value.isEmpty ? "Building is required" : null,
+            ),
+            const SizedBox(height: 16),
+
+            // Apartment & Floor
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _apartmentController,
+                    decoration: InputDecoration(
+                      labelText: "Apartment",
+                      labelStyle: GoogleFonts.poppins(),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: TextFormField(
+                    controller: _floorController,
+                    decoration: InputDecoration(
+                      labelText: "Floor",
+                      labelStyle: GoogleFonts.poppins(),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // Street
+            TextFormField(
+              controller: _streetController,
+              decoration: InputDecoration(
+                label: RichText(
+                  text: TextSpan(
+                    text: 'Street',
+                    style: GoogleFonts.poppins(color: Colors.black),
+                    children: const [
+                      TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
+                    ],
+                  ),
+                ),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              validator: (value) => value == null || value.isEmpty ? "Street is required" : null,
+            ),
+            const SizedBox(height: 12),
+
+            // Set as current address
+            Row(
+              children: [
+                Checkbox(
+                  value: _setAsHome,
+                  onChanged: (val) {
+                    setState(() {
+                      _setAsHome = val ?? false;
+                    });
+                  },
+                ),
+                Text(
+                  "Set as current home address",
+                  style: GoogleFonts.poppins(),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 30),
+
+            // Save Button
+            ElevatedButton(
+              onPressed: _save,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF23334A),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: Text(
+                "Save Changes",
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 20),
           ],
         ),
       ),

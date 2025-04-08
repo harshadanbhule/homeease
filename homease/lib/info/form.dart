@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:homease/info/LocationPermissionPage.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-// Replace with your actual import
+import 'package:google_fonts/google_fonts.dart';
 
 class UserFormPage extends StatefulWidget {
   @override
@@ -23,23 +23,22 @@ class _UserFormPageState extends State<UserFormPage> {
   }
 
   void _submitForm() {
-  if (_formKey.currentState!.validate() && phoneNumberWithCode != null) {
-    String firstName = _firstNameController.text;
-    String lastName = _lastNameController.text;
+    if (_formKey.currentState!.validate() && phoneNumberWithCode != null) {
+      String firstName = _firstNameController.text;
+      String lastName = _lastNameController.text;
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LocationPermissionPage(
-          firstName: firstName,
-          lastName: lastName,
-          phoneNumber: phoneNumberWithCode!,
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LocationPermissionPage(
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phoneNumberWithCode!,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
-}
-
 
   void _showPolicyDialog() {
     showDialog(
@@ -62,7 +61,7 @@ class _UserFormPageState extends State<UserFormPage> {
                       SizedBox(width: 10),
                       Text(
                         "Homeease Policies",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
                           color: Color(0xFF6216C7),
@@ -98,7 +97,7 @@ class _UserFormPageState extends State<UserFormPage> {
                           borderRadius: BorderRadius.circular(25),
                         ),
                       ),
-                      child: Text("Got it", style: TextStyle(color: Colors.white)),
+                      child: Text("Got it", style: GoogleFonts.poppins(color: Colors.white)),
                     ),
                   )
                 ],
@@ -116,15 +115,15 @@ class _UserFormPageState extends State<UserFormPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("• ", style: TextStyle(fontSize: 18)),
+          Text("• ", style: GoogleFonts.poppins(fontSize: 18)),
           Expanded(
             child: RichText(
               text: TextSpan(
-                style: TextStyle(color: Colors.black87, fontSize: 14),
+                style: GoogleFonts.poppins(color: Colors.black87, fontSize: 14),
                 children: [
                   TextSpan(
                     text: "$title: ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
                   ),
                   TextSpan(text: content),
                 ],
@@ -157,69 +156,68 @@ class _UserFormPageState extends State<UserFormPage> {
             children: [
               Text(
                 "Complete your info",
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
                   color: Colors.black87,
                 ),
               ),
-              SizedBox(height: 24),
-              Text("First Name", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+              SizedBox(height: 60),
+              Text("First Name", style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500)),
               SizedBox(height: 8),
               TextFormField(
                 controller: _firstNameController,
                 decoration: InputDecoration(
                   hintText: 'Enter your first name',
+                  hintStyle: GoogleFonts.poppins(),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
+                style: GoogleFonts.poppins(),
                 validator: (value) => value == null || value.isEmpty ? 'Enter First Name' : null,
               ),
-              SizedBox(height: 16),
-              Text("Last Name", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+              SizedBox(height: 30),
+              Text("Last Name", style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500)),
               SizedBox(height: 8),
               TextFormField(
                 controller: _lastNameController,
                 decoration: InputDecoration(
                   hintText: 'Enter your last name',
+                  hintStyle: GoogleFonts.poppins(),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
+                style: GoogleFonts.poppins(),
                 validator: (value) => value == null || value.isEmpty ? 'Enter Last Name' : null,
               ),
-              SizedBox(height: 16),
-              Text("Mobile Number", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+              SizedBox(height: 30),
+              Text("Mobile Number", style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500)),
               SizedBox(height: 8),
               IntlPhoneField(
                 decoration: InputDecoration(
-                  
-                 // labelText: 'Phone Number',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                  
                 ),
                 initialCountryCode: 'IN',
-                 pickerDialogStyle: PickerDialogStyle(
-                backgroundColor: Colors.white,
-                searchFieldInputDecoration: InputDecoration(
-                  hintText: 'Search Country',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                pickerDialogStyle: PickerDialogStyle(
+                  backgroundColor: Colors.white,
+                  searchFieldInputDecoration: InputDecoration(
+                    hintText: 'Search Country',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    prefixIcon: Icon(Icons.search),
                   ),
-                  prefixIcon: Icon(Icons.search),
+                  countryNameStyle: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                  countryCodeStyle: GoogleFonts.poppins(
+                    fontSize: 14,
+                    color: Colors.grey[600],
+                  ),
+                  padding: EdgeInsets.all(16),
+                  searchFieldPadding: EdgeInsets.symmetric(horizontal: 16),
+                  listTilePadding: EdgeInsets.symmetric(vertical: 10),
                 ),
-                countryNameStyle: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-                countryCodeStyle: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                ),
-                //dividerColor: Colors.grey.shade300,
-                padding: EdgeInsets.all(16),
-                searchFieldPadding: EdgeInsets.symmetric(horizontal: 16),
-                listTilePadding: EdgeInsets.symmetric(vertical: 10),
-               // borderRadius: BorderRadius.circular(20),
-              ),
                 onChanged: (phone) => phoneNumberWithCode = phone.completeNumber,
                 validator: (phone) =>
                     phone == null || phone.number.isEmpty ? 'Enter Phone Number' : null,
@@ -237,12 +235,11 @@ class _UserFormPageState extends State<UserFormPage> {
                   child: Text.rich(
                     TextSpan(
                       text: "By selecting Next, I agree to Homease’s ",
-                      style: TextStyle(fontSize: 13),
+                      style: GoogleFonts.poppins(fontSize: 13),
                       children: [
                         TextSpan(
                           text: "terms of service, Payment Terms of Service & Privacy Policy.",
-                          style: TextStyle(
-                            //decoration: TextDecoration.underline,
+                          style: GoogleFonts.poppins(
                             color: Colors.blueAccent,
                           ),
                         ),
@@ -256,13 +253,13 @@ class _UserFormPageState extends State<UserFormPage> {
                 child: ElevatedButton(
                   onPressed: _submitForm,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF6216C7),
+                    backgroundColor: Color.fromRGBO(100, 27, 180, 1),
                     minimumSize: Size(width * 0.85, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(28),
                     ),
                   ),
-                  child: Text("Next", style: TextStyle(fontSize: 16,color: Colors.white)),
+                  child: Text("Next", style: GoogleFonts.poppins(fontSize: 16, color: Colors.white)),
                 ),
               ),
               SizedBox(height: 24),
