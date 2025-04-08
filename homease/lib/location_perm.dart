@@ -66,7 +66,7 @@ class _LocationPerm extends State<LocationPerm> {
               child: Text(textAlign: TextAlign.center,"Allow location access",style: GoogleFonts.bricolageGrotesque(fontSize: 17,fontWeight: FontWeight.w800,color: Colors.white)),
             ),
           ),
-          Text("Skip this step",style: GoogleFonts.bricolageGrotesque(decoration: TextDecoration.underline,fontSize: 15,fontWeight: FontWeight.w500,color: Color.fromRGBO(49,49,49,1)),),
+          Text("Skip this step",style: GoogleFonts.bricolageGrotesque( fontSize: 15,fontWeight: FontWeight.w500,color: Color.fromRGBO(49,49,49,1)),),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
