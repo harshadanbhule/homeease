@@ -1,27 +1,33 @@
 import 'package:get/get.dart';
 import 'package:homease/model/service_model.dart';
-import 'package:homease/model/sub_service_model.dart';
 import 'package:homease/service%20data/service_data.dart';
 
 class ServiceController extends GetxController {
-  RxList<Service> allServices = <Service>[].obs;
-  RxList<SubService> cart = <SubService>[].obs;
-  RxList<Service> filteredServices = <Service>[].obs;
+  final allServices = <Service>[].obs;
+  final filteredServices = <Service>[].obs;
 
   @override
   void onInit() {
-    loadServices();
     super.onInit();
+    loadServices();
   }
 
   void loadServices() {
-    allServices.assignAll(services); // from service_data.dart
-    filteredServices.assignAll(services);
+    allServices.assignAll(services); // ✅ Using your existing list
+    filteredServices.assignAll(allServices);
   }
 
-  void addToCart(SubService item) {
-    cart.add(item);
+  void search(String query) {
+    if (query.trim().isEmpty) {
+      filteredServices.assignAll(allServices);
+    } else {
+      filteredServices.assignAll(
+        allServices.where((s) => s.name.toLowerCase().contains(query.toLowerCase())),
+      );
+    }
   }
 
-  double get total => cart.fold(0.0, (sum, item) => sum + item.price);
+  void resetSearch() {
+    filteredServices.assignAll(allServices);
+  }
 }

@@ -77,6 +77,7 @@ class _ChatbotState extends State<Chatbot> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: const CustomAppBar(),
        bottomNavigationBar: CustomNavBar(selectedIndex: 2),
       body: SafeArea(

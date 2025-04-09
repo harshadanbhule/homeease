@@ -14,6 +14,7 @@ import 'package:homease/Pages/service/service_page.dart';
 import 'package:homease/categories.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:homease/controllers/location_controller.dart';
+import 'package:homease/controllers/user_controller.dart';
 import 'package:homease/onboarding_screen.dart';
 import 'package:homease/splash_2.dart';
 import 'package:line_icons/line_icons.dart';
@@ -36,6 +37,11 @@ class _CustomLoadingState extends State<CustomLoading> {
   bool isLoading = true;
   int _selectedIndex = 0;
  final locationController = Get.find<LocationController>();
+ 
+ 
+
+
+
 
   // final List<Widget> _screens = [
   //   Center(child: Text('Home')),
@@ -47,7 +53,9 @@ class _CustomLoadingState extends State<CustomLoading> {
   @override
   void initState() {
     super.initState();
-     fetchUserLocation();
+    fetchUserLocation();
+    
+
     Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         isLoading = false;
@@ -56,32 +64,47 @@ class _CustomLoadingState extends State<CustomLoading> {
   }
 
 
+
   Future<void> fetchUserLocation() async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) return;
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
 
-      final doc = await FirebaseFirestore.instance
-          .collection('user_locations')
-          .doc(user.uid)
-          .get();
+    final doc = await FirebaseFirestore.instance
+        .collection('user_locations')
+        .doc(user.uid)
+        .get();
 
-      final data = doc.data();
-      if (data != null) {
-        final lat = data['coordinates']['latitude'];
-        final lng = data['coordinates']['longitude'];
+    final data = doc.data();
+    if (data != null) {
+      print("Fetched Data: $data");
 
-        final placemarks = await placemarkFromCoordinates(lat, lng);
-        final place = placemarks.first;
+      final lat = data['coordinates']['latitude'];
+      final lng = data['coordinates']['longitude'];
+      final placemarks = await placemarkFromCoordinates(lat, lng);
+      final place = placemarks.first;
+      locationController.updateLocation("${place.street}, ${place.locality}");
 
-        locationController.updateLocation("${place.street}, ${place.locality}");
-      }
-    } catch (e) {
-      locationController.updateLocation("Error fetching location");
+      
+      final firstName = data['firstName'] ?? '';
+      final lastName = data['lastName'] ?? '';
+      final fullName = "$firstName $lastName";
+      print("Full name: $fullName"); 
+      locationController.updateFullName(fullName);
+    } else {
+      print("Document doesn't exist.");
     }
+  } catch (e) {
+    print("Error: $e");
+    locationController.updateLocation("Error fetching location");
+    locationController.updateFullName("Error fetching name");
   }
+}
+
+
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
       backgroundColor: const Color.fromRGBO(249, 249, 249, 1),
       appBar: const CustomAppBar(),
@@ -90,9 +113,7 @@ class _CustomLoadingState extends State<CustomLoading> {
           children: [
             const SizedBox(height: 20),
 
-            //
-            // SECTION 1: Greeting + Search
-            //
+            
             isLoading
                 ? Column(
                   children: [
@@ -130,15 +151,17 @@ class _CustomLoadingState extends State<CustomLoading> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "HELLO harshad 👋",
-                          style: GoogleFonts.inter(
+                    
+  Obx(() => Text("HELLO ${locationController.fullName.value.toUpperCase()} 👋",
+  
+  style: GoogleFonts.inter(
                             letterSpacing: 1.5,
                             fontSize: 17,
                             fontWeight: FontWeight.w500,
                             color: const Color.fromRGBO(102, 108, 137, 1),
-                          ),
-                        ),
+                          ),)),
+
+
                         Text(
                           "What you are looking for today",
                           style: GoogleFonts.inter(

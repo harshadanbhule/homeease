@@ -1,11 +1,16 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:homease/Custom/search_category_field.dart';
 import 'package:homease/Getx%20Controller/service_controller.dart';
 import 'package:homease/Pages/service/sub_service_page.dart';
 
-class ServicePage extends StatelessWidget {
+class ServicePage extends StatefulWidget {
+  @override
+  State<ServicePage> createState() => _ServicePageState();
+}
+
+class _ServicePageState extends State<ServicePage> {
   final controller = Get.find<ServiceController>();
   final TextEditingController searchController = TextEditingController();
   final Random random = Random();
@@ -24,6 +29,13 @@ class ServicePage extends StatelessWidget {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    controller.resetSearch(); // Reset filter on page load
+    searchController.clear();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9F9),
@@ -33,56 +45,19 @@ class ServicePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 🔙 Back Button
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => Get.back(),
-                    child: const Icon(Icons.arrow_back_ios_new_rounded, size: 22),
-                  ),
-                ],
-              ),
-
               const SizedBox(height: 15),
 
-              // 🔍 Custom Search Field
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width - 50,
-                height: 60,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: TextField(
-                    controller: searchController,
-                    onChanged: (value) {
-                      controller.filteredServices.value = controller.allServices
-                          .where((s) => s.name.toLowerCase().contains(value.toLowerCase()))
-                          .toList();
-                    },
-                    decoration: InputDecoration(
-                      suffixIcon: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/homescreen/Group 34308.svg",
-                            height: 24,
-                          ),
-                        ],
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      fillColor: const Color.fromRGBO(248, 248, 248, 1),
-                      filled: true,
-                      hintText: "Search what you need...",
-                    ),
-                  ),
-                ),
+              // 🔍 Search Field
+              SearchCategoryField(
+                controller: searchController,
+                onSearch: () {
+                  controller.search(searchController.text);
+                },
               ),
 
               const SizedBox(height: 16),
 
-              // 📌 Title
+              // 📋 Header
               Row(
                 children: const [
                   VerticalDivider(
@@ -104,7 +79,7 @@ class ServicePage extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // 📦 Grid
+              // 📦 Service Grid
               Expanded(
                 child: Obx(() {
                   final services = controller.filteredServices;
@@ -113,7 +88,8 @@ class ServicePage extends StatelessWidget {
                       : GridView.builder(
                           itemCount: services.length,
                           padding: const EdgeInsets.only(bottom: 20),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                             childAspectRatio: 0.75,
                             crossAxisSpacing: 16,
@@ -121,10 +97,14 @@ class ServicePage extends StatelessWidget {
                           ),
                           itemBuilder: (context, index) {
                             final service = services[index];
-                            final bgColor = circleColors[index % circleColors.length];
+                            final bgColor =
+                                circleColors[index % circleColors.length];
 
                             return GestureDetector(
-                              onTap: () => Get.to(() => SubServicePage(service: service)),
+                              onTap: () async {
+                                await Get.to(() => SubServicePage(service: service));
+                                controller.resetSearch(); // Reset after back
+                              },
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
