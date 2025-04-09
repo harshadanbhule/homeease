@@ -59,6 +59,7 @@ class _SplashState extends State<Splash> {
               ),
             ],
           ),
+          
 
           // Center logo/image
           Row(
@@ -67,7 +68,10 @@ class _SplashState extends State<Splash> {
               SvgPicture.asset("assets/splash/home_logo.svg"),
               Text("HOMEEASE",style: GoogleFonts.robotoCondensed(fontSize: 48,fontWeight: FontWeight.w700,color: Colors.white),)
           ],),
-
+           SizedBox(
+    height: 30,
+  ),
+ 
           // Bottom row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,14 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:card_loading/card_loading.dart';
+import 'package:homease/Custom/custom_appbar.dart';
+import 'package:homease/Custom/custom_nav_bar.dart';
+import 'package:homease/Pages/Profile.dart';
+import 'package:homease/Pages/booking.dart';
+import 'package:homease/Pages/chatbot.dart';
+import 'package:homease/Pages/service/service_page.dart';
 import 'package:homease/categories.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:homease/controllers/location_controller.dart';
 import 'package:homease/onboarding_screen.dart';
 import 'package:homease/splash_2.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:shimmer/main.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:get/get.dart';
+
 
 
 
@@ -21,6 +35,7 @@ class CustomLoading extends StatefulWidget {
 class _CustomLoadingState extends State<CustomLoading> {
   bool isLoading = true;
   int _selectedIndex = 0;
+ final locationController = Get.find<LocationController>();
 
   // final List<Widget> _screens = [
   //   Center(child: Text('Home')),
@@ -32,6 +47,7 @@ class _CustomLoadingState extends State<CustomLoading> {
   @override
   void initState() {
     super.initState();
+     fetchUserLocation();
     Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         isLoading = false;
@@ -39,87 +55,36 @@ class _CustomLoadingState extends State<CustomLoading> {
     });
   }
 
+
+  Future<void> fetchUserLocation() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
+
+      final doc = await FirebaseFirestore.instance
+          .collection('user_locations')
+          .doc(user.uid)
+          .get();
+
+      final data = doc.data();
+      if (data != null) {
+        final lat = data['coordinates']['latitude'];
+        final lng = data['coordinates']['longitude'];
+
+        final placemarks = await placemarkFromCoordinates(lat, lng);
+        final place = placemarks.first;
+
+        locationController.updateLocation("${place.street}, ${place.locality}");
+      }
+    } catch (e) {
+      locationController.updateLocation("Error fetching location");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(249, 249, 249, 1),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        toolbarHeight: 72,
-        automaticallyImplyLeading: false,
-        titleSpacing: 0,
-        title: Row(
-          children: [
-            const SizedBox(width: 10),
-            Icon(CupertinoIcons.map_fill, color: Colors.black),
-            const SizedBox(width: 10),
-            SizedBox(
-              width: 121,
-              height: 35,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "CURRENT LOCATION ",
-                    style: GoogleFonts.interTight(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 10,
-                      color: const Color.fromRGBO(99, 106, 117, 1),
-                    ),
-                  ),
-                  Text(
-                    "41,Vadgoan Bk.",
-                    style: GoogleFonts.interTight(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                      color: const Color.fromRGBO(23, 43, 77, 1),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Spacer(),
-            Column(
-              children: [
-                const SizedBox(height: 10),
-                Shimmer.fromColors(
-                  baseColor: const Color(0xFF8C6239),
-                  highlightColor: const Color(0xFFF4BF4B),
-                  child: Text(
-                    "BRONZE",
-                    style: GoogleFonts.interTight(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFF8C6239),
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-                ),
-                Text(
-                  "0 POINTS",
-                  style: GoogleFonts.interTight(
-                    fontSize: 8,
-                    fontWeight: FontWeight.w600,
-                    color: const Color.fromRGBO(99, 106, 117, 1),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(width: 6),
-            Shimmer.fromColors(
-              baseColor: const Color(0xFF8C6239),
-              highlightColor: const Color(0xFFF4BF4B),
-              child: SvgPicture.asset(
-                "assets/homescreen/Badge.svg",
-                height: 24,
-                width: 24,
-              ),
-            ),
-
-            const SizedBox(width: 10),
-          ],
-        ),
-      ),
+      appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -454,7 +419,7 @@ class _CustomLoadingState extends State<CustomLoading> {
                               ),
                               const SizedBox(width: 30),
 
-                              // 🔵 Category 3
+                          
                               SizedBox(
                                 height: 88,
                                 width: 61,
@@ -491,7 +456,7 @@ class _CustomLoadingState extends State<CustomLoading> {
                               ),
                               const SizedBox(width: 30),
 
-                              // ➡️ See All
+                           
                               SizedBox(
                                 height: 88,
                                 width: 61,
@@ -499,14 +464,9 @@ class _CustomLoadingState extends State<CustomLoading> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return Categories();
-                                            },
-                                          ),
-                                        );
+                                         Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => ServicePage()),
+  );
                                       },
                                       child: Container(
                                         height: 58,
@@ -750,123 +710,7 @@ class _CustomLoadingState extends State<CustomLoading> {
           ],
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          color: Colors.transparent,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: GNav(
-              activeColor: Colors.white,
-              backgroundColor: Colors.transparent,
-              haptic: true,
-              tabBorderRadius: 15,
-              tabActiveBorder: Border.all(color: Colors.black, width: 0.1),
-              curve: Curves.easeOutExpo,
-              duration: Duration(milliseconds: 300),
-              gap: 8,
-              iconSize: MediaQuery.of(context).size.width < 400 ? 22 : 26,
-              tabBackgroundColor: Color.fromRGBO(100, 27, 180, 1),
-              padding:
-                  MediaQuery.of(context).size.width < 400
-                      ? EdgeInsets.symmetric(horizontal: 15, vertical: 8)
-                      : EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              selectedIndex: _selectedIndex,
-              onTabChange: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-
-                switch (index) {
-                  case 0:
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => Splash_2()),
-                    );
-                    break;
-                  case 1:
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => Splash_2()),
-                    );
-                    break;
-                  // more cases...
-                }
-              },
-              tabs: [
-                GButton(
-                  icon: Icons.circle,
-                  iconColor: Colors.transparent,
-                  leading: Shimmer.fromColors(
-                    baseColor:
-                        _selectedIndex == 0 ? Colors.white : Colors.black,
-                    highlightColor: Colors.grey.shade300,
-                    child: Icon(LineIcons.home, size: 26),
-                  ),
-                  text: 'Home',
-                  textStyle: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                    color: Colors.white,
-                  ),
-                ),
-                GButton(
-                  icon: Icons.circle,
-                  iconColor: Colors.transparent,
-                  leading: Shimmer.fromColors(
-                    baseColor:
-                        _selectedIndex == 1 ? Colors.white : Colors.black,
-                    highlightColor: Colors.grey.shade300,
-                    child: Icon(LineIcons.book, size: 26),
-                  ),
-                  text: 'Bookings',
-                  textStyle: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                    color: Colors.white,
-                  ),
-                ),
-                GButton(
-                  icon: Icons.circle,
-                  iconColor: Colors.transparent,
-                  leading: Shimmer.fromColors(
-                    baseColor:
-                        _selectedIndex == 2 ? Colors.white : Colors.black,
-                    highlightColor: Colors.grey.shade300,
-                    child: SvgPicture.asset(
-                      "assets/homescreen/1538298822.svg",
-                      height: 37,
-                      width: 37,
-                      color: _selectedIndex == 2 ? Colors.white : Colors.black,
-                    ),
-                  ),
-                  text: 'ChatBot',
-                  textStyle: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                    color: Colors.white,
-                  ),
-                ),
-                GButton(
-                  icon: Icons.circle,
-                  iconColor: Colors.transparent,
-                  leading: Shimmer.fromColors(
-                    baseColor:
-                        _selectedIndex == 3 ? Colors.white : Colors.black,
-                    highlightColor: Colors.grey.shade300,
-                    child: Icon(LineIcons.user, size: 26),
-                  ),
-                  text: 'Profile',
-                  textStyle: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+     bottomNavigationBar: CustomNavBar(selectedIndex: 0),
     );
   }
 

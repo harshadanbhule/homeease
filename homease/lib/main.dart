@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:homease/Getx%20Controller/service_controller.dart';
+import 'package:homease/controllers/location_controller.dart';
 import 'package:homease/firebase_options.dart';
-import 'package:homease/homepage.dart';
+import 'package:homease/Pages/homepage.dart';
 import 'package:homease/info/Home.dart';
 
 import 'package:homease/info/form.dart';
@@ -9,10 +11,10 @@ import 'package:homease/login.dart';
 import 'package:homease/register.dart';
 import 'package:homease/splash.dart';
 import 'dart:developer';
-
+import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-void main()async {
+/*void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
@@ -21,6 +23,8 @@ void main()async {
   for(var doc in snapshot.docs){
   log(doc.data().toString());
   }
+  Get.put(LocationController()); 
+  Get.put(ServiceController());
   runApp(const MainApp());
 }
 
@@ -45,6 +49,32 @@ class MainApp extends StatelessWidget {
 
 
         }
+    );
+  }
+}*/
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); // Initialize Firebase
+
+  // Register the LocationController globally
+  Get.put(LocationController());
+Get.put(ServiceController());
+
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Homease',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const CustomLoading(), // Change this to your starting page
     );
   }
 }

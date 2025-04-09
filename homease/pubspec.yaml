@@ -29,7 +29,7 @@ dependencies:
   card_loading: ^0.3.2
   google_nav_bar: ^5.0.7
   line_icons: ^2.0.3
-
+  get: ^4.6.6
   shimmer: ^3.0.0
 
 dev_dependencies:
@@ -85,3 +85,9 @@ flutter:
     -  assets/homescreen/Mask Group.png
     -  assets/homescreen/1538298822.svg
     -  assets/homescreen/Badge.svg
+    -  assets/service/ac.png
+    -  assets/service/cleaning.png
+    -  assets/subservice/ac/ac repair.png
+    -  assets/subservice/ac/ac service.png
+    -  assets/subservice/cleaning/carpet cleaning.png
+    -  assets/subservice/cleaning/home.png

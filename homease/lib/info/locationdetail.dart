@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:homease/DataBase/user_location_model.dart';
-import 'package:homease/homepage.dart';
+import 'package:homease/Pages/homepage.dart';
 import 'package:homease/info/Home.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
