@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  card_loading:
+    dependency: "direct main"
+    description:
+      name: card_loading
+      sha256: "40cf98405a104ee8151600510033a9e22a3f9ad808e613c0e563ee7bd85a644c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.2"
   characters:
     dependency: transitive
     description:
@@ -105,6 +113,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  curved_navigation_bar:
+    dependency: "direct main"
+    description:
+      name: curved_navigation_bar
+      sha256: bb4ab128fcb6f4a9f0f1f72d227db531818b20218984789777f049fcbf919279
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.6"
   device_frame:
     dependency: transitive
     description:
@@ -365,6 +381,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.2.1"
+  google_nav_bar:
+    dependency: "direct main"
+    description:
+      name: google_nav_bar
+      sha256: bb12dd21514ee1b041ab3127673e2fd85e693337df308f7f2b75cd1e8e92eaf4
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.7"
   http:
     dependency: transitive
     description:
@@ -437,6 +461,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  line_icons:
+    dependency: "direct main"
+    description:
+      name: line_icons
+      sha256: "249d781d922f5437ac763d9c8f5a02cf5b499a6dc3f85e4b92e074cff0a932ab"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
   lints:
     dependency: transitive
     description:
@@ -725,6 +757,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.1"
+  shimmer:
+    dependency: "direct main"
+    description:
+      name: shimmer
+      sha256: "5f88c883a22e9f9f299e5ba0e4f7e6054857224976a5d9f839d4ebdc94a14ac9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   sky_engine:
     dependency: transitive
     description: flutter

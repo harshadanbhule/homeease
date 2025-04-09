@@ -248,7 +248,7 @@ class _UserFormPageState extends State<UserFormPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 62),
+              SizedBox(height: 32),
               Center(
                 child: ElevatedButton(
                   onPressed: _submitForm,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:homease/DataBase/user_location_model.dart';
+import 'package:homease/homepage.dart';
 import 'package:homease/info/Home.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -87,7 +88,7 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
 
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => Home()),
+          MaterialPageRoute(builder: (context) => CustomLoading()),
           (route) => false,
         );
       } catch (e) {

@@ -44,7 +44,7 @@ class _LoginState extends State<Login> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Login successful. Redirecting to Home.")),
           );
-          Navigator.pushReplacementNamed(context, '/home');
+          Navigator.pushReplacementNamed(context, '/home2');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Login successful. Please complete your location form.")),

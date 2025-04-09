@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:homease/firebase_options.dart';
+import 'package:homease/homepage.dart';
 import 'package:homease/info/Home.dart';
 
 import 'package:homease/info/form.dart';
@@ -38,6 +39,7 @@ class MainApp extends StatelessWidget {
           '/home':(context) => Home(),
           '/splash':(context)=> Splash(),
           '/form':(context)=> UserFormPage(),
+          '/home2':(context)=>CustomLoading()
           //'/location':(context)=> LocationMapPage()
 
 

@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   animated_splash_screen: ^1.3.0
+  curved_navigation_bar: ^1.0.6
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.17
@@ -25,6 +26,11 @@ dependencies:
   intl_phone_field: ^3.2.0
   flutter_map: ^6.1.0
   latlong2: ^0.9.0
+  card_loading: ^0.3.2
+  google_nav_bar: ^5.0.7
+  line_icons: ^2.0.3
+
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -68,3 +74,14 @@ flutter:
     -  assets/svg_images/Group 34607.svg
     -  assets/svg_images/Group 34612.svg
     -  assets/svg_images/Group 34613.svg
+    -  assets/homescreen/Group 34308.svg
+    -  assets/homescreen/Group 34256.svg
+    -  assets/homescreen/Group 34257.svg
+    -  assets/homescreen/Group 34258.svg
+    -  assets/homescreen/image 214.png
+    -  assets/homescreen/image 213.png
+    -  assets/homescreen/Mask Group (1).png
+    -  assets/homescreen/Mask Group (2).png
+    -  assets/homescreen/Mask Group.png
+    -  assets/homescreen/1538298822.svg
+    -  assets/homescreen/Badge.svg
