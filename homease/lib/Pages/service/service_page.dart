@@ -16,15 +16,15 @@ class _ServicePageState extends State<ServicePage> {
   final Random random = Random();
 
   final List<Color> circleColors = const [
-    Color(0xFFFAF3F0),
-    Color(0xFFE0F7FA),
-    Color(0xFFFFF3E0),
-    Color(0xFFF3E5F5),
-    Color(0xFFE8F5E9),
-    Color(0xFFFFEBEE),
-    Color(0xFFFFFDE7),
-    Color(0xFFFBE9E7),
-    Color(0xFFE3F2FD),
+    Color.fromRGBO(255, 188, 153, 1),
+    Color.fromRGBO(202, 189, 255, 1),
+    Color.fromRGBO(177, 229, 252, 1),
+    Color.fromRGBO(181, 235, 205, 1),
+    Color.fromRGBO(255, 216, 141,1),
+    Color.fromRGBO(203, 235, 164,1),
+    Color.fromRGBO(251, 155, 155, 1),
+    Color.fromRGBO(248, 176, 237, 1),
+    Color.fromRGBO(175, 198, 255, 1),
     Color(0xFFFFF9C4),
   ];
 
@@ -116,7 +116,7 @@ class _ServicePageState extends State<ServicePage> {
                                       shape: BoxShape.circle,
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.all(12),
+                                      padding: const EdgeInsets.all(20),
                                       child: Image.asset(
                                         service.image,
                                         fit: BoxFit.contain,
