@@ -113,7 +113,7 @@ class _SubServicePageState extends State<SubServicePage> {
                                 sub.image,
                                 width: width * 0.28,
                                 height: width * 0.28,
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fill,
                               ),
                             ),
 

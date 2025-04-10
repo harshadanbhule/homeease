@@ -93,3 +93,51 @@ flutter:
     -  assets/subservice/ac/ac service.png
     -  assets/subservice/cleaning/carpet cleaning.png
     -  assets/subservice/cleaning/home.png
+    -  assets/subservice/beauty/waxing.png
+    -  assets/subservice/beauty/pedicure.png
+    -  assets/subservice/beauty/hair_styling.png
+    -  assets/subservice/beauty/facial.png
+    -  assets/subservice/beauty/bridal_makeup.png
+    -  assets/subservice/appliances/water_purifier_repair.png
+    -  assets/subservice/appliances/oven_repair.png
+    -  assets/subservice/appliances/washing_machine_repai.png
+    -  assets/subservice/appliances/ac_repair.png
+    -  assets/subservice/appliances/fridge_repair.png
+    -  assets/subservice/painting/exterior_painting.png
+    -  assets/subservice/painting/interior_painting.png
+    -  assets/subservice/painting/texture_painting.png
+    -  assets/subservice/painting/waterproof_painting.png
+    -  assets/subservice/painting/wood-metal_painting.png
+    -  assets/subservice/cleaning/home_cleaning.png
+    -  assets/subservice/cleaning/faucet_bathroom_cleaning.png
+    -  assets/subservice/cleaning/kitchen_cleaning.png
+    -  assets/subservice/cleaning/sofa_cleaning.png
+    -  assets/subservice/plumbing/Bathroom Fittings .png
+    -  assets/subservice/plumbing/Drain Cleaning.png
+    -  assets/subservice/plumbing/Tap & Faucet Installation.png
+    -  assets/subservice/plumbing/Water Motor & Pump Repair.png
+    -  assets/subservice/plumbing/leakage_fixing.png
+    -  assets/subservice/shifting/Furniture Dismantling & Reassembly.png
+    -  assets/subservice/shifting/Local Pickup & Delivery.png
+    -  assets/subservice/shifting/Home Shifting.png
+    -  assets/subservice/shifting/Office Relocation.png
+    -  assets/subservice/shifting/Packing Services.png
+    -  assets/subservice/elecronics/CCTV & Security System Installation.png
+    -  assets/subservice/elecronics/Electrical Wiring & Fitting.png
+    -  assets/subservice/elecronics/Fan Installation.png
+    -  assets/subservice/elecronics/TV Installation & Wall Mounting.png
+    -  assets/subservice/elecronics/Light & Appliance Installation.png
+    -  assets/subservice/men_salon/Haircut & Stylin.png
+    -  assets/subservice/men_salon/Hair Coloring.png
+    -  assets/subservice/men_salon/Head & Shoulder Massage.png
+    -  assets/subservice/men_salon/Facial & Skincare.png
+    -  assets/subservice/men_salon/Beard Grooming & Trimming.png
+    -  assets/subservice/ac/uninstallation.png
+    -  assets/subservice/ac/installation.png
+    -  assets/service/beauty.png
+    -  assets/service/appliances.png
+    -  assets/service/paint.png
+    -  assets/service/plumbing.png
+    -  assets/service/electronics.png
+    -  assets/service/shifting.png
+    -  assets/service/men salon.png

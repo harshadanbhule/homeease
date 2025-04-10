@@ -24,9 +24,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 
-
-
-
 class CustomLoading extends StatefulWidget {
   const CustomLoading({super.key});
   @override
@@ -36,12 +33,7 @@ class CustomLoading extends StatefulWidget {
 class _CustomLoadingState extends State<CustomLoading> {
   bool isLoading = true;
   int _selectedIndex = 0;
- final locationController = Get.find<LocationController>();
- 
- 
-
-
-
+  final locationController = Get.find<LocationController>();
 
   // final List<Widget> _screens = [
   //   Center(child: Text('Home')),
@@ -54,7 +46,6 @@ class _CustomLoadingState extends State<CustomLoading> {
   void initState() {
     super.initState();
     fetchUserLocation();
-    
 
     Future.delayed(const Duration(seconds: 3), () {
       setState(() {
@@ -63,48 +54,44 @@ class _CustomLoadingState extends State<CustomLoading> {
     });
   }
 
-
-
   Future<void> fetchUserLocation() async {
-  try {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
 
-    final doc = await FirebaseFirestore.instance
-        .collection('user_locations')
-        .doc(user.uid)
-        .get();
+      final doc =
+          await FirebaseFirestore.instance
+              .collection('user_locations')
+              .doc(user.uid)
+              .get();
 
-    final data = doc.data();
-    if (data != null) {
-      print("Fetched Data: $data");
+      final data = doc.data();
+      if (data != null) {
+        print("Fetched Data: $data");
 
-      final lat = data['coordinates']['latitude'];
-      final lng = data['coordinates']['longitude'];
-      final placemarks = await placemarkFromCoordinates(lat, lng);
-      final place = placemarks.first;
-      locationController.updateLocation("${place.street}, ${place.locality}");
+        final lat = data['coordinates']['latitude'];
+        final lng = data['coordinates']['longitude'];
+        final placemarks = await placemarkFromCoordinates(lat, lng);
+        final place = placemarks.first;
+        locationController.updateLocation("${place.street}, ${place.locality}");
 
-      
-      final firstName = data['firstName'] ?? '';
-      final lastName = data['lastName'] ?? '';
-      final fullName = "$firstName $lastName";
-      print("Full name: $fullName"); 
-      locationController.updateFullName(fullName);
-    } else {
-      print("Document doesn't exist.");
+        final firstName = data['firstName'] ?? '';
+        final lastName = data['lastName'] ?? '';
+        final fullName = "$firstName $lastName";
+        print("Full name: $fullName");
+        locationController.updateFullName(fullName);
+      } else {
+        print("Document doesn't exist.");
+      }
+    } catch (e) {
+      print("Error: $e");
+      locationController.updateLocation("Error fetching location");
+      locationController.updateFullName("Error fetching name");
     }
-  } catch (e) {
-    print("Error: $e");
-    locationController.updateLocation("Error fetching location");
-    locationController.updateFullName("Error fetching name");
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       backgroundColor: const Color.fromRGBO(249, 249, 249, 1),
       appBar: const CustomAppBar(),
@@ -113,7 +100,6 @@ class _CustomLoadingState extends State<CustomLoading> {
           children: [
             const SizedBox(height: 20),
 
-            
             isLoading
                 ? Column(
                   children: [
@@ -151,16 +137,18 @@ class _CustomLoadingState extends State<CustomLoading> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                    
-  Obx(() => Text("HELLO ${locationController.fullName.value.toUpperCase()} 👋",
-  
-  style: GoogleFonts.inter(
-                            letterSpacing: 1.5,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
-                            color: const Color.fromRGBO(102, 108, 137, 1),
-                          ),)),
+                        Obx(
+                          () => Text(
+                            "HELLO ${locationController.fullName.value.toUpperCase()} 👋",
 
+                            style: GoogleFonts.inter(
+                              letterSpacing: 1.5,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                              color: const Color.fromRGBO(102, 108, 137, 1),
+                            ),
+                          ),
+                        ),
 
                         Text(
                           "What you are looking for today",
@@ -213,14 +201,16 @@ class _CustomLoadingState extends State<CustomLoading> {
             // SECTION 2: Offer Scroll View
             //
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.only(top: 10,bottom: 10),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                height: 220,
-                width: MediaQuery.sizeOf(context).width - 30,
+                height:
+                    MediaQuery.of(context).size.height *
+                    0.19, // ⬅️ Reduced height responsively
+                width: MediaQuery.of(context).size.width - 30,
                 child:
                     isLoading
                         ? SingleChildScrollView(
@@ -231,8 +221,11 @@ class _CustomLoadingState extends State<CustomLoading> {
                               (index) => Padding(
                                 padding: const EdgeInsets.all(20),
                                 child: CardLoading(
-                                  height: 160,
-                                  width: 289,
+                                  height:
+                                      MediaQuery.of(context).size.height *
+                                      0.16, // ⬅️ Responsive loader
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.75,
                                   borderRadius: BorderRadius.circular(14),
                                   animationDuration: const Duration(
                                     milliseconds: 1200,
@@ -251,7 +244,12 @@ class _CustomLoadingState extends State<CustomLoading> {
                           child: Row(
                             children: [
                               offerCard(
-                                bgColor: const Color.fromRGBO(224, 255, 236, 1),
+                                bgColor: const Color.fromARGB(
+                                  255,
+                                  179,
+                                  255,
+                                  208,
+                                ),
                                 title: "Offer AC service",
                                 discount: "Get 25%",
                                 buttonColor: const Color.fromARGB(
@@ -264,9 +262,9 @@ class _CustomLoadingState extends State<CustomLoading> {
                               offerCard(
                                 bgColor: const Color.fromARGB(
                                   255,
-                                  224,
-                                  226,
-                                  255,
+                                  192,
+                                  196,
+                                  253,
                                 ),
                                 title: "Offer",
                                 discount: "Get 15%",
@@ -281,8 +279,8 @@ class _CustomLoadingState extends State<CustomLoading> {
                                 bgColor: const Color.fromARGB(
                                   255,
                                   255,
-                                  242,
                                   224,
+                                  181,
                                 ),
                                 title: "Offer",
                                 discount: "Get 15%",
@@ -303,33 +301,35 @@ class _CustomLoadingState extends State<CustomLoading> {
             ///
             ///
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                height: 120,
-                width: MediaQuery.sizeOf(context).width - 30,
+                height: MediaQuery.of(context).size.height * 0.16,
+                width: double.infinity,
                 child:
                     isLoading
-                        ? SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.only(
-                            top: 5,
-                            left: 20,
-                            right: 5,
-                            bottom: 5,
+                        ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 10,
                           ),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: List.generate(4, (index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 30),
+                              return Expanded(
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     CardLoading(
-                                      height: 58,
-                                      width: 58,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                          0.17,
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          0.17,
                                       borderRadius: BorderRadius.circular(100),
                                       animationDuration: const Duration(
                                         milliseconds: 1200,
@@ -358,154 +358,140 @@ class _CustomLoadingState extends State<CustomLoading> {
                             }),
                           ),
                         )
-                        : SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.only(
-                            top: 5,
-                            left: 20,
-                            right: 5,
-                            bottom: 5,
-                          ),
-                          child: Row(
-                            children: [
-                              // 🟢 Category 1
-                              SizedBox(
-                                height: 88,
-                                width: 61,
+                        : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // 🔧 AC Repair
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height:
+                                        MediaQuery.of(context).size.width *
+                                        0.17,
+                                    width:
+                                        MediaQuery.of(context).size.width *
+                                        0.17,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color.fromRGBO(255, 188, 153, 1),
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/homescreen/Group 34256.svg",
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    "AC Repair",
+                                    style: GoogleFonts.interTight(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 11,
+                                      color: Color.fromRGBO(65, 64, 93, 1),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // 💅 Beauty
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height:
+                                        MediaQuery.of(context).size.width *
+                                        0.17,
+                                    width:
+                                        MediaQuery.of(context).size.width *
+                                        0.17,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color.fromRGBO(202, 189, 255, 1),
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/homescreen/Group 34257.svg",
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    "Beauty",
+                                    style: GoogleFonts.interTight(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 11,
+                                      color: Color.fromRGBO(65, 64, 93, 1),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // 🧊 Appliance
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height:
+                                        MediaQuery.of(context).size.width *
+                                        0.17,
+                                    width:
+                                        MediaQuery.of(context).size.width *
+                                        0.17,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color.fromRGBO(177, 229, 252, 1),
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/homescreen/Group 34258.svg",
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    "Appliance",
+                                    style: GoogleFonts.interTight(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 11,
+                                      color: Color.fromRGBO(65, 64, 93, 1),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // ➡️ See All
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => ServicePage(),
+                                    ),
+                                  );
+                                },
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height: 58,
-                                      width: 58,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                          0.17,
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          0.17,
                                       decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: Color.fromRGBO(255, 188, 153, 1),
+                                        color: Color.fromRGBO(223, 245, 255, 1),
                                       ),
-                                      child: SvgPicture.asset(
-                                        "assets/homescreen/Group 34256.svg",
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      "AC Repair",
-                                      style: GoogleFonts.interTight(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 13,
-                                        color: const Color.fromRGBO(
-                                          65,
-                                          64,
-                                          93,
-                                          1,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 30),
-
-                              // 🟣 Category 2
-                              SizedBox(
-                                height: 88,
-                                width: 61,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 58,
-                                      width: 58,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Color.fromRGBO(202, 189, 255, 1),
-                                      ),
-                                      child: SvgPicture.asset(
-                                        "assets/homescreen/Group 34257.svg",
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      "Beauty",
-                                      style: GoogleFonts.interTight(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 13,
-                                        color: const Color.fromRGBO(
-                                          65,
-                                          64,
-                                          93,
-                                          1,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 30),
-
-                          
-                              SizedBox(
-                                height: 88,
-                                width: 61,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 58,
-                                      width: 58,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Color.fromRGBO(177, 229, 252, 1),
-                                      ),
-                                      child: SvgPicture.asset(
-                                        "assets/homescreen/Group 34258.svg",
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      "Appliance",
-                                      style: GoogleFonts.interTight(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 13,
-                                        color: const Color.fromRGBO(
-                                          65,
-                                          64,
-                                          93,
-                                          1,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 30),
-
-                           
-                              SizedBox(
-                                height: 88,
-                                width: 61,
-                                child: Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                         Navigator.of(context).push(
-    MaterialPageRoute(builder: (context) => ServicePage()),
-  );
-                                      },
-                                      child: Container(
-                                        height: 58,
-                                        width: 58,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color.fromRGBO(
-                                            223,
-                                            245,
-                                            255,
-                                            1,
-                                          ),
-                                        ),
-                                        child: const Icon(
-                                          Icons.arrow_forward_ios_rounded,
-                                        ),
+                                      child: const Icon(
+                                        Icons.arrow_forward_ios_rounded,
                                       ),
                                     ),
                                     const SizedBox(height: 8),
@@ -513,20 +499,16 @@ class _CustomLoadingState extends State<CustomLoading> {
                                       "See All",
                                       style: GoogleFonts.interTight(
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 13,
-                                        color: const Color.fromRGBO(
-                                          65,
-                                          64,
-                                          93,
-                                          1,
-                                        ),
+                                        fontSize: 10,
+                                        color: Color.fromRGBO(65, 64, 93, 1),
                                       ),
+                                      textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
               ),
             ),
@@ -568,10 +550,12 @@ class _CustomLoadingState extends State<CustomLoading> {
                                   fontSize: 20,
                                 ),
                               ),
-                          SizedBox(width: 80),
+                          SizedBox(
+                            width: MediaQuery.sizeOf(context).width * 0.05,
+                          ),
                           Container(
                             height: 35,
-                            width: 83,
+                            width: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
                               color: Color.fromRGBO(239, 239, 239, 1),
@@ -630,10 +614,21 @@ class _CustomLoadingState extends State<CustomLoading> {
                                       ),
                                   SizedBox(height: 8),
                                   isLoading
-                                      ? CardLoading(
-                                        height: 15,
-                                        width: 100,
-                                        borderRadius: BorderRadius.circular(8),
+                                      ? Banner(
+                                        message: '10% off',
+                                        location: BannerLocation.topEnd,
+                                        color: Colors.red,
+                                        child: SizedBox(
+                                          height: 100,
+                                          width: 100,
+                                          child: CardLoading(
+                                            height: 100,
+                                            width: 100,
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                        ),
                                       )
                                       : Text(
                                         "Home Cleaning",
@@ -733,7 +728,7 @@ class _CustomLoadingState extends State<CustomLoading> {
           ],
         ),
       ),
-     bottomNavigationBar: CustomNavBar(selectedIndex: 0),
+      bottomNavigationBar: CustomNavBar(selectedIndex: 0),
     );
   }
 
@@ -746,7 +741,7 @@ class _CustomLoadingState extends State<CustomLoading> {
     return Padding(
       padding: const EdgeInsets.only(left: 15, right: 10),
       child: Container(
-        height: 160,
+        height: MediaQuery.sizeOf(context).height * 0.23,
         width: 289,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
@@ -785,7 +780,7 @@ class _CustomLoadingState extends State<CustomLoading> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                 height: 30,
-                width: 106,
+                width: MediaQuery.sizeOf(context).width * 0.33,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
                   color: Colors.white,
@@ -800,7 +795,7 @@ class _CustomLoadingState extends State<CustomLoading> {
                         color: buttonColor,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 10),
                     Icon(
                       Icons.arrow_forward_ios_outlined,
                       size: 14,
