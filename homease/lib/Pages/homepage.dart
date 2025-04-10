@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:card_loading/card_loading.dart';
@@ -266,52 +267,28 @@ class _CustomLoadingState extends State<CustomLoading> {
                           child: Row(
                             children: [
                               offerCard(
-                                bgColor: const Color.fromARGB(
-                                  255,
-                                  179,
-                                  255,
-                                  208,
-                                ),
+                                bgColor: const Color(0xFF8C6239),
                                 title: "Offer AC service",
                                 discount: "Get 25%",
-                                buttonColor: const Color.fromARGB(
-                                  255,
-                                  67,
-                                  208,
-                                  126,
-                                ),
+                                buttonColor: const Color.fromARGB(255, 0, 255, 106),
+                                highColor : const Color(0xFFF4BF4B),
+                                couponCode: "Homeoff25"
                               ),
                               offerCard(
-                                bgColor: const Color.fromARGB(
-                                  255,
-                                  192,
-                                  196,
-                                  253,
-                                ),
+                                bgColor: const Color.fromRGBO(169, 169, 169, 1),
                                 title: "Offer",
                                 discount: "Get 15%",
-                                buttonColor: const Color.fromARGB(
-                                  255,
-                                  67,
-                                  91,
-                                  208,
-                                ),
+                                buttonColor: const Color.fromARGB(255, 0, 42, 255),
+                                highColor: const Color.fromRGBO(220, 220, 220, 1),
+                                couponCode: "Homeoff15"
                               ),
                               offerCard(
-                                bgColor: const Color.fromARGB(
-                                  255,
-                                  255,
-                                  224,
-                                  181,
-                                ),
+                                bgColor: const Color(0xFFCD7F32),
                                 title: "Offer",
-                                discount: "Get 15%",
-                                buttonColor: const Color.fromARGB(
-                                  255,
-                                  234,
-                                  184,
-                                  91,
-                                ),
+                                discount: "Get 10%",
+                                buttonColor: const Color.fromARGB(255, 255, 166, 0),
+                                highColor: const Color(0xFFE6B980),
+                                couponCode: "Homeoff10"
                               ),
                             ],
                           ),
@@ -872,81 +849,115 @@ class _CustomLoadingState extends State<CustomLoading> {
   }
 
   Widget offerCard({
-    required Color bgColor,
-    required String title,
-    required String discount,
-    required Color buttonColor,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 10),
-      child: Container(
-        height: MediaQuery.sizeOf(context).height * 0.23,
-        width: 289,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          color: bgColor,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 15,
-            right: 10,
-            left: 10,
-            bottom: 15,
+  required Color bgColor,
+  required String title,
+  required String discount,
+  required Color buttonColor,
+  required Color highColor,
+  required String couponCode, // 👈 Optional coupon code
+}) {
+  return Padding(
+    padding: const EdgeInsets.all(10),
+    child: Container(
+      height: MediaQuery.sizeOf(context).height * 0.25,
+      width: 289,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [
+          BoxShadow(color: Colors.black87, blurRadius: 9, spreadRadius: 0.5)
+        ],
+      ),
+      child: Stack(
+        children: [
+          Shimmer.fromColors(
+            baseColor: bgColor,
+            highlightColor: highColor,
+            direction: ShimmerDirection.btt,
+            loop: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    title,
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  const Icon(Icons.info_rounded, size: 20),
-                ],
-              ),
-              Text(
-                discount,
-                style: GoogleFonts.interTight(
-                  fontSize: 48,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                height: 30,
-                width: MediaQuery.sizeOf(context).width * 0.33,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: Colors.white,
-                ),
-                child: Row(
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 15,
+              right: 10,
+              left: 10,
+              bottom: 15,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
                     Text(
-                      "Grab Offer",
-                      style: GoogleFonts.interTight(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: buttonColor,
+                      title,
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black87,
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Icon(
-                      Icons.arrow_forward_ios_outlined,
-                      size: 14,
-                      color: buttonColor,
-                    ),
+                    const SizedBox(width: 4),
+                    const Icon(Icons.info_rounded, size: 20, color: Colors.black),
                   ],
                 ),
-              ),
-            ],
+                Text(
+                  discount,
+                  style: GoogleFonts.interTight(
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black54,
+                  ),
+                ),
+                // const SizedBox(height: 10),
+                InkWell(
+                  onTap: () {
+                    Clipboard.setData(ClipboardData(text: couponCode));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Coupon code "$couponCode" copied!'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    height: 29,
+                    width: MediaQuery.sizeOf(context).width * 0.30,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: Colors.black54,
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Grab Offer",
+                          style: GoogleFonts.interTight(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Icon(
+                          Icons.copy,
+                          size: 14,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 }
