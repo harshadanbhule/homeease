@@ -29,11 +29,17 @@ class _ServicePageState extends State<ServicePage> {
   ];
 
   @override
-  void initState() {
-    super.initState();
-    controller.resetSearch(); // Reset filter on page load
+  @override
+void initState() {
+  super.initState();
+
+  // Move Rx or text controller changes here using addPostFrameCallback
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    controller.resetSearch(); // Assuming this updates an observable
     searchController.clear();
-  }
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {

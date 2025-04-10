@@ -24,7 +24,7 @@ class CustomNavBar extends StatelessWidget {
         break;
       case 1:
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const Booking()));
+            context, MaterialPageRoute(builder: (_) => Booking()));
         break;
       case 2:
         Navigator.pushReplacement(
