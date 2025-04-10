@@ -33,6 +33,7 @@ dependencies:
   line_icons: ^2.0.3
   get: ^4.6.6
   shimmer: ^3.0.0
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:

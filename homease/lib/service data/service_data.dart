@@ -47,16 +47,16 @@ List<Service> services = [
       SubService(
         id: 'sub001',
         name: 'Home Cleaning',
-        image: 'assets/subservice/cleaning/carpet cleaning.png',
+        image: 'assets/subservice/cleaning/home_cleaning.png',
         price: 299.0,
-        description: 'Complete home cleaning',
+        description: 'Complete cleaning service for your home',
       ),
       SubService(
         id: 'sub002',
         name: 'Carpet Cleaning',
         image: 'assets/subservice/cleaning/carpet cleaning.png',
         price: 799.0,
-        description: 'proper carpet cleaning',
+        description: 'Complete cleaning service for your carpet',
       ),
       SubService(
         id: 'sub003',

@@ -56,6 +56,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: const CustomAppBar(),
       bottomNavigationBar: CustomNavBar(selectedIndex: 3),
       body: SingleChildScrollView(
@@ -124,7 +125,7 @@ class _ProfileState extends State<Profile> {
 
             const SizedBox(height: 30),
 
-            // Menu Items
+            
             _buildMenuItem(Icons.person, 'Edit Profile', Colors.blue),
             _buildMenuItem(Icons.location_on, 'Saved Addresses', Colors.indigo),
             _buildMenuItem(Icons.notifications, 'Notifications', Colors.deepOrange),

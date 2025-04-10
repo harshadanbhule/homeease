@@ -11,13 +11,18 @@ import 'package:homease/Pages/Profile.dart';
 import 'package:homease/Pages/booking.dart';
 import 'package:homease/Pages/chatbot.dart';
 import 'package:homease/Pages/service/service_page.dart';
+import 'package:homease/Pages/service/sub_service_detail_page.dart';
+import 'package:homease/Pages/service/sub_service_page.dart';
 import 'package:homease/categories.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:homease/controllers/location_controller.dart';
 import 'package:homease/controllers/user_controller.dart';
+import 'package:homease/model/sub_service_model.dart';
 import 'package:homease/onboarding_screen.dart';
+import 'package:homease/service%20data/service_data.dart';
 import 'package:homease/splash_2.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/main.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,6 +39,22 @@ class _CustomLoadingState extends State<CustomLoading> {
   bool isLoading = true;
   int _selectedIndex = 0;
   final locationController = Get.find<LocationController>();
+  Future<void> _checkFirstTimeLoading() async {
+    final prefs = await SharedPreferences.getInstance();
+    final alreadyLoaded = prefs.getBool('alreadyLoaded') ?? false;
+
+    if (!alreadyLoaded) {
+      await Future.delayed(const Duration(seconds: 3));
+      setState(() {
+        isLoading = false;
+      });
+      prefs.setBool('alreadyLoaded', true);
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   // final List<Widget> _screens = [
   //   Center(child: Text('Home')),
@@ -46,6 +67,7 @@ class _CustomLoadingState extends State<CustomLoading> {
   void initState() {
     super.initState();
     fetchUserLocation();
+    _checkFirstTimeLoading();
 
     Future.delayed(const Duration(seconds: 3), () {
       setState(() {
@@ -201,7 +223,7 @@ class _CustomLoadingState extends State<CustomLoading> {
             // SECTION 2: Offer Scroll View
             //
             Padding(
-              padding: const EdgeInsets.only(top: 10,bottom: 10),
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.transparent,
@@ -366,20 +388,31 @@ class _CustomLoadingState extends State<CustomLoading> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    height:
-                                        MediaQuery.of(context).size.width *
-                                        0.17,
-                                    width:
-                                        MediaQuery.of(context).size.width *
-                                        0.17,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color.fromRGBO(255, 188, 153, 1),
-                                    ),
-                                    child: SvgPicture.asset(
-                                      "assets/homescreen/Group 34256.svg",
-                                      fit: BoxFit.scaleDown,
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final acService = services.firstWhere(
+                                        (s) => s.name == 'AC Service',
+                                      );
+                                      await Get.to(
+                                        () =>
+                                            SubServicePage(service: acService),
+                                      );
+                                    },
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                          0.17,
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          0.17,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color.fromRGBO(255, 188, 153, 1),
+                                      ),
+                                      child: SvgPicture.asset(
+                                        "assets/homescreen/Group 34256.svg",
+                                        fit: BoxFit.scaleDown,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(height: 8),
@@ -401,20 +434,31 @@ class _CustomLoadingState extends State<CustomLoading> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    height:
-                                        MediaQuery.of(context).size.width *
-                                        0.17,
-                                    width:
-                                        MediaQuery.of(context).size.width *
-                                        0.17,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color.fromRGBO(202, 189, 255, 1),
-                                    ),
-                                    child: SvgPicture.asset(
-                                      "assets/homescreen/Group 34257.svg",
-                                      fit: BoxFit.scaleDown,
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final acService = services.firstWhere(
+                                        (s) => s.name == 'Beauty',
+                                      );
+                                      await Get.to(
+                                        () =>
+                                            SubServicePage(service: acService),
+                                      );
+                                    },
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                          0.17,
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          0.17,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color.fromRGBO(202, 189, 255, 1),
+                                      ),
+                                      child: SvgPicture.asset(
+                                        "assets/homescreen/Group 34257.svg",
+                                        fit: BoxFit.scaleDown,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(height: 8),
@@ -431,42 +475,50 @@ class _CustomLoadingState extends State<CustomLoading> {
                               ),
                             ),
 
-                            // 🧊 Appliance
                             Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height:
-                                        MediaQuery.of(context).size.width *
-                                        0.17,
-                                    width:
-                                        MediaQuery.of(context).size.width *
-                                        0.17,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color.fromRGBO(177, 229, 252, 1),
+                              child: GestureDetector(
+                                onTap: () async {
+                                  final acService = services.firstWhere(
+                                    (s) => s.name == 'Appliance',
+                                  );
+                                  await Get.to(
+                                    () => SubServicePage(service: acService),
+                                  );
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                          0.17,
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          0.17,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color.fromRGBO(177, 229, 252, 1),
+                                      ),
+                                      child: SvgPicture.asset(
+                                        "assets/homescreen/Group 34258.svg",
+                                        fit: BoxFit.scaleDown,
+                                      ),
                                     ),
-                                    child: SvgPicture.asset(
-                                      "assets/homescreen/Group 34258.svg",
-                                      fit: BoxFit.scaleDown,
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      "Appliance",
+                                      style: GoogleFonts.interTight(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 11,
+                                        color: Color.fromRGBO(65, 64, 93, 1),
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    "Appliance",
-                                    style: GoogleFonts.interTight(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 11,
-                                      color: Color.fromRGBO(65, 64, 93, 1),
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
 
-                            // ➡️ See All
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
@@ -553,37 +605,50 @@ class _CustomLoadingState extends State<CustomLoading> {
                           SizedBox(
                             width: MediaQuery.sizeOf(context).width * 0.05,
                           ),
-                          Container(
-                            height: 35,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: Color.fromRGBO(239, 239, 239, 1),
-                              border: Border.all(width: 0.5),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 15),
-                              child: Row(
-                                children: [
-                                  isLoading
-                                      ? CardLoading(
-                                        height: 12,
-                                        width: 40,
-                                        borderRadius: BorderRadius.circular(8),
-                                      )
-                                      : Text(
-                                        "See All",
-                                        style: GoogleFonts.interTight(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
+                          GestureDetector(
+                            onTap: () async {
+                              final acService = services.firstWhere(
+                                (s) => s.name == 'Cleaning Service',
+                              );
+                              await Get.to(
+                                () => SubServicePage(service: acService),
+                              );
+                            },
+
+                            child: Container(
+                              height: 35,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: Color.fromRGBO(239, 239, 239, 1),
+                                border: Border.all(width: 0.5),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 15),
+                                child: Row(
+                                  children: [
+                                    isLoading
+                                        ? CardLoading(
+                                          height: 12,
+                                          width: 40,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        )
+                                        : Text(
+                                          "See All",
+                                          style: GoogleFonts.interTight(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
-                                      ),
-                                  SizedBox(width: 5),
-                                  Icon(
-                                    Icons.arrow_forward_ios_outlined,
-                                    size: 13,
-                                  ),
-                                ],
+                                    SizedBox(width: 5),
+                                    Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                      size: 13,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -597,28 +662,48 @@ class _CustomLoadingState extends State<CustomLoading> {
                             SizedBox(
                               height: 190,
                               width: 140,
-                              child: Column(
-                                children: [
-                                  isLoading
-                                      ? CardLoading(
-                                        height: 140,
-                                        width: 154,
-                                        borderRadius: BorderRadius.circular(12),
-                                      )
-                                      : SizedBox(
-                                        height: 140,
-                                        width: 154,
-                                        child: Image.asset(
-                                          "assets/homescreen/Mask Group.png",
+                              child: GestureDetector(
+                                onTap: () {
+                                  SubService homeCleaningService = SubService(
+                                    id: "1",
+                                    name: "Home Cleaning",
+                                    description:
+                                        "Complete cleaning service for your home.",
+                                    image:
+                                        "assets/subservice/cleaning/home_cleaning.png",
+                                    price: 299,
+                                  );
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => SubServiceDetailPage(
+                                            subService: homeCleaningService,
+                                          ),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    isLoading
+                                        ? CardLoading(
+                                          height: 140,
+                                          width: 154,
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                        )
+                                        : SizedBox(
+                                          height: 140,
+                                          width: 154,
+                                          child: Image.asset(
+                                            "assets/subservice/cleaning/home_cleaning.png",
+                                          ),
                                         ),
-                                      ),
-                                  SizedBox(height: 8),
-                                  isLoading
-                                      ? Banner(
-                                        message: '10% off',
-                                        location: BannerLocation.topEnd,
-                                        color: Colors.red,
-                                        child: SizedBox(
+                                    SizedBox(height: 8),
+                                    isLoading
+                                        ? SizedBox(
                                           height: 100,
                                           width: 100,
                                           child: CardLoading(
@@ -628,88 +713,142 @@ class _CustomLoadingState extends State<CustomLoading> {
                                               8,
                                             ),
                                           ),
+                                        )
+                                        : Text(
+                                          "Home Cleaning",
+                                          style: GoogleFonts.interTight(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 15,
+                                          ),
                                         ),
-                                      )
-                                      : Text(
-                                        "Home Cleaning",
-                                        style: GoogleFonts.interTight(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(width: 10),
                             SizedBox(
                               height: 190,
                               width: 140,
-                              child: Column(
-                                children: [
-                                  isLoading
-                                      ? CardLoading(
-                                        height: 140,
-                                        width: 154,
-                                        borderRadius: BorderRadius.circular(12),
-                                      )
-                                      : SizedBox(
-                                        height: 140,
-                                        width: 154,
-                                        child: Image.asset(
-                                          "assets/homescreen/Mask Group (1).png",
+                              child: GestureDetector(
+                                onTap: () {
+                                  SubService homeCleaningService = SubService(
+                                    id: "2",
+                                    name: "Carpet Cleaning",
+                                    description:
+                                        "Complete cleaning service for your carpet.",
+                                    image:
+                                        "assets/homescreen/Mask Group (1).png",
+                                    price: 799,
+                                  );
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => SubServiceDetailPage(
+                                            subService: homeCleaningService,
+                                          ),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    isLoading
+                                        ? CardLoading(
+                                          height: 140,
+                                          width: 154,
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                        )
+                                        : SizedBox(
+                                          height: 140,
+                                          width: 154,
+                                          child: Image.asset(
+                                            "assets/homescreen/Mask Group (1).png",
+                                          ),
                                         ),
-                                      ),
-                                  SizedBox(height: 8),
-                                  isLoading
-                                      ? CardLoading(
-                                        height: 15,
-                                        width: 100,
-                                        borderRadius: BorderRadius.circular(8),
-                                      )
-                                      : Text(
-                                        "Carpet Cleaning",
-                                        style: GoogleFonts.interTight(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15,
+                                    SizedBox(height: 8),
+                                    isLoading
+                                        ? CardLoading(
+                                          height: 15,
+                                          width: 100,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        )
+                                        : Text(
+                                          "Carpet Cleaning",
+                                          style: GoogleFonts.interTight(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 15,
+                                          ),
                                         ),
-                                      ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(width: 10),
                             SizedBox(
                               height: 190,
                               width: 140,
-                              child: Column(
-                                children: [
-                                  isLoading
-                                      ? CardLoading(
-                                        height: 140,
-                                        width: 154,
-                                        borderRadius: BorderRadius.circular(12),
-                                      )
-                                      : SizedBox(
-                                        height: 140,
-                                        width: 154,
-                                        child: Image.asset(
-                                          "assets/homescreen/Mask Group (2).png",
+                              child: GestureDetector(
+                                onTap: () {
+                                  SubService homeCleaningService = SubService(
+                                    id: "3",
+                                    name: "Bathroom Cleaning",
+                                    description:
+                                        "Complete bathroom and toilet cleaning",
+                                    image:
+                                        "assets/subservice/cleaning/faucet_bathroom_cleaning.png",
+                                    price: 299,
+                                  );
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => SubServiceDetailPage(
+                                            subService: homeCleaningService,
+                                          ),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    isLoading
+                                        ? CardLoading(
+                                          height: 140,
+                                          width: 154,
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                        )
+                                        : SizedBox(
+                                          height: 140,
+                                          width: 154,
+                                          child: Image.asset(
+                                            "assets/subservice/cleaning/faucet_bathroom_cleaning.png",
+                                          ),
                                         ),
-                                      ),
-                                  SizedBox(height: 8),
-                                  isLoading
-                                      ? CardLoading(
-                                        height: 15,
-                                        width: 100,
-                                        borderRadius: BorderRadius.circular(8),
-                                      )
-                                      : Text(
-                                        "AC Cleaning",
-                                        style: GoogleFonts.interTight(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15,
+                                    SizedBox(height: 8),
+                                    isLoading
+                                        ? CardLoading(
+                                          height: 15,
+                                          width: 100,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        )
+                                        : Text(
+                                          " Bathroom Cleaning",
+                                          style: GoogleFonts.interTight(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 15,
+                                          ),
                                         ),
-                                      ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ],
