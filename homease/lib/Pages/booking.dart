@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:homease/Custom/custom_appbar.dart';
 import 'package:homease/Custom/custom_nav_bar.dart';
 import 'package:homease/model/sub_service_model.dart';
@@ -52,29 +53,97 @@ class Booking extends StatelessWidget {
                 if (matchedSubService != null) break;
               }
 
-              return Card(
-                margin: const EdgeInsets.all(10),
-                child: ListTile(
-                  leading: matchedSubService != null
-                      ? Image.asset(
-                          matchedSubService.image,
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                        )
-                      : const Icon(Icons.image_not_supported),
-                  title: Text("Service: $subServiceName"),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Qty: ${order['quantity']}"),
-                      Text("Total: ₹${order['totalAmount']}"),
-                      Text("Date: $formattedDate"),
-                      Text("Time: ${order['bookingTime']}"),
-                    ],
+              return  Container(
+  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(16),
+    boxShadow: const [
+      BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2)),
+    ],
+  ),
+  child: Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      SizedBox(
+        width: 5,
+      ),
+      Column(
+        children: [
+          SizedBox(height: 5,),
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(16),
+              bottomLeft: Radius.circular(16),
+              topRight:Radius.circular(16),
+              bottomRight: Radius.circular(16), 
+            ),
+            child: matchedSubService != null
+                ? Image.asset(
+                    matchedSubService.image,
+                    width: MediaQuery.of(context).size.width * 0.28,
+                    height: MediaQuery.of(context).size.width * 0.28,
+                    fit: BoxFit.cover,
+                  )
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.28,
+                    height: MediaQuery.of(context).size.width * 0.28,
+                    color: Colors.grey[300],
+                    child: const Icon(Icons.image_not_supported),
                   ),
+          ),
+        ],
+      ),
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Service: $subServiceName",
+                style: GoogleFonts.poppins(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
                 ),
-              );
+              ),
+              const SizedBox(height: 4),
+              Text(
+                "Qty: ${order['quantity']}",
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  color: Colors.grey[600],
+                ),
+              ),
+              Text(
+                "Total: ₹${order['totalAmount']}",
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  color: Colors.grey[600],
+                ),
+              ),
+              Text(
+                "Date: $formattedDate",
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  color: Colors.grey[600],
+                ),
+              ),
+              Text(
+                "Time: ${order['bookingTime']}",
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
+        ),
+      )
+    ],
+  ),
+);
+
             },
           );
         },

@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:homease/Custom/custom_appbar.dart';
 import 'package:homease/Custom/custom_nav_bar.dart';
+import 'package:homease/Pages/Profile/editProf.dart';
+import 'package:homease/Pages/Profile/editadd.dart';
+import 'package:homease/Pages/Profile/invite.dart';
 import 'package:homease/controllers/location_controller.dart';
 
 class Profile extends StatefulWidget {
@@ -72,17 +77,17 @@ class _ProfileState extends State<Profile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Obx(() => Text(
-                            'HELLO ${locationController.fullName.value.toUpperCase()}',
-                            style: const TextStyle(
+                            'Hello ${locationController.fullName.value}',
+                            style: GoogleFonts.poppins(
                               fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF1E2B3B),
+                              fontWeight: FontWeight.w800,
+                              color: Color.fromRGBO(35, 51, 74, 1),
                             ),
                           )),
                       const SizedBox(height: 4),
                       Text(
                         email.isNotEmpty ? email : 'Loading email...',
-                        style: const TextStyle(color: Colors.grey),
+                        style: const TextStyle(color: Color.fromRGBO(119, 119, 119, 1)),
                       ),
                     ],
                   ),
@@ -97,47 +102,65 @@ class _ProfileState extends State<Profile> {
             const SizedBox(height: 20),
 
             // Invite card
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF5F5F5),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Invite your friends & get up to ₹100',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Color(0xFF1E2B3B),
+            GestureDetector(
+              onTap: () => Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => const InvitePage()),
+),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(249, 249, 249, 1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Invite your friends & get up to ₹100',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Color.fromRGBO(35, 51, 74, 1),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Introduce your friends to the easiest way to find and hire professionals for your needs.',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
+                    SizedBox(height: 8),
+                    Text(
+                      'Introduce your friends to the easiest way to find and hire professionals for your needs.',
+                      style:GoogleFonts.poppins(color: Colors.grey),
+                    ),
+                  ],
+                ),
               ),
             ),
 
             const SizedBox(height: 30),
 
             
-            _buildMenuItem(Icons.person, 'Edit Profile', Colors.blue),
-            _buildMenuItem(Icons.location_on, 'Saved Addresses', Colors.indigo),
-            _buildMenuItem(Icons.notifications, 'Notifications', Colors.deepOrange),
-            _buildMenuItem(Icons.favorite, "Saved Skillr’s", Colors.purple),
-            _buildMenuItem(Icons.star, 'Rate our app', Colors.amber),
-            _buildMenuItem(Icons.info, 'About Us', Colors.cyan),
+            GestureDetector(
+              onTap: () => Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => const EditProfilePage()),
+),
+
+              child: _buildMenuItem(Icons.person, 'Edit Profile', Color.fromRGBO(37, 183, 211, 1))),
+            GestureDetector(
+              onTap: () => Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => const Editadd()),
+),
+
+              child: _buildMenuItem(Icons.location_on, 'Saved Addresses', Color.fromRGBO(51, 122, 251, 1))),
+            _buildMenuItem(Icons.notifications, 'Notifications', Color.fromRGBO(82, 102, 141, 1)),
+            _buildMenuItem(Icons.favorite, "Saved Services", Color.fromRGBO(248, 79, 49, 1)),
+            _buildMenuItem(Icons.star, 'Rate our app', Color.fromRGBO(100, 27, 180, 1)),
+            _buildMenuItem(Icons.info, 'About Us', Color.fromRGBO(100, 27, 180, 1)),
 
             const SizedBox(height: 40),
-            const Center(
+            Center(
               child: Text(
                 'Version 1.0.0',
-                style: TextStyle(color: Colors.grey),
+                style: GoogleFonts.poppins(color: Colors.grey),
               ),
             ),
           ],
@@ -153,15 +176,15 @@ class _ProfileState extends State<Profile> {
         children: [
           CircleAvatar(
             radius: 20,
-            backgroundColor: color.withOpacity(0.1),
-            child: Icon(icon, color: color),
+            backgroundColor: color,
+            child: Icon(icon, color: Colors.white),
           ),
           const SizedBox(width: 16),
           Text(
             title,
-            style: const TextStyle(
+            style: GoogleFonts.poppins(
               fontSize: 16,
-              color: Color(0xFF1E2B3B),
+              color: Color.fromRGBO(35, 51, 74, 1),
             ),
           ),
         ],

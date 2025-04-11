@@ -278,14 +278,29 @@ class _SubServiceDetailPageState extends State<SubServiceDetailPage> {
             ElevatedButton(
               onPressed: () {
                 final code = promoCodeController.text.trim();
-                if (code == 'Harshad007') {
+                String title = "Promo Code";
+  String message = "";
+                if (code == 'Homeoff25') {
                   discountAmount.value = 100;
-                } else if (code == 'Anbhule007') {
-                  discountAmount.value = 200;
+                  message = "Homeoff25 Promo code applied";
+                } else if (code == 'Homeoff15') {
+                  discountAmount.value = 50;
+                 message = "Homeoff15 Promo code applied";
+                }  else if (code == 'Homeoff10') {
+                  discountAmount.value = 25;
+                message = "Homeoff10 Promo code applied";
                 } else {
                   discountAmount.value = 0;
                 }
                 Get.back();
+                Get.defaultDialog(
+    title: title,
+    middleText: message,
+    textConfirm: "OK",
+    buttonColor:const Color.fromRGBO(100, 27, 180, 1),
+    onConfirm: () => Get.back(),
+  );
+                
               },
               child: const Text("Apply"),
             ),

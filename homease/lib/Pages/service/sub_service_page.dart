@@ -44,13 +44,13 @@ class _SubServicePageState extends State<SubServicePage> {
     final media = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F6),
+      backgroundColor: const Color(0xFFF9F9F9),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 50),
+            const SizedBox(height: 15),
             SearchCategoryField(
               controller: searchController,
               onSearch: () => _performSearch(searchController.text),
@@ -193,17 +193,27 @@ class _SubServicePageState extends State<SubServicePage> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(16),
-                bottomLeft: Radius.circular(16),
-              ),
-              child: Image.asset(
-                sub.image,
-                width: media.width * 0.28,
-                height: media.width * 0.28,
-                fit: BoxFit.cover,
-              ),
+            SizedBox(width: 4,),
+            Column(
+              children: [
+                SizedBox(
+                  height: 4,
+                ),
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                          bottomLeft: Radius.circular(16),
+                          topRight:Radius.circular(16),
+                          bottomRight: Radius.circular(16), 
+                  ),
+                  child: Image.asset(
+                    sub.image,
+                    width: media.width * 0.28,
+                    height: media.width * 0.28,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
             ),
             Expanded(
               child: Padding(

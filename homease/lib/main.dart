@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:homease/Getx%20Controller/service_controller.dart';
+import 'package:homease/Pages/shimar.dart';
 import 'package:homease/controllers/location_controller.dart';
 import 'package:homease/controllers/user_controller.dart';
 import 'package:homease/firebase_options.dart';
@@ -45,7 +46,8 @@ class MainApp extends StatelessWidget {
           '/home':(context) => Home(),
           '/splash':(context)=> Splash(),
           '/form':(context)=> UserFormPage(),
-          '/home2':(context)=>CustomLoading()
+          '/home2':(context)=>CustomLoading(),
+          '/shimar':(context)=>ShimarPage()
           //'/location':(context)=> LocationMapPage()
 
 
