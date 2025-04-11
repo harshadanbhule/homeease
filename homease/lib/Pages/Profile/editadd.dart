@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Editadd extends StatefulWidget {
@@ -32,10 +33,11 @@ class _EditaddState extends State<Editadd> {
   Future<void> _loadAddress() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      final doc = await FirebaseFirestore.instance
-          .collection('user_locations')
-          .doc(user.uid)
-          .get();
+      final doc =
+          await FirebaseFirestore.instance
+              .collection('user_locations')
+              .doc(user.uid)
+              .get();
 
       if (doc.exists) {
         final data = doc.data()!;
@@ -65,11 +67,11 @@ class _EditaddState extends State<Editadd> {
           .collection('user_locations')
           .doc(user.uid)
           .update({
-        'building': _buildingController.text.trim(),
-        'apartment': _apartmentController.text.trim(),
-        'street': _streetController.text.trim(),
-        'city': _cityController.text.trim(),
-      });
+            'building': _buildingController.text.trim(),
+            'apartment': _apartmentController.text.trim(),
+            'street': _streetController.text.trim(),
+            'city': _cityController.text.trim(),
+          });
 
       setState(() {
         building = _buildingController.text.trim();
@@ -88,52 +90,65 @@ class _EditaddState extends State<Editadd> {
   Widget _buildAddressCard() {
     return Card(
       margin: const EdgeInsets.all(16),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 0,
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: const BorderSide(
+          color: Colors.grey, // Border color
+          width: 1.0, // Border thickness
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: isEditing
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTextField('Building', _buildingController),
-                  const SizedBox(height: 8),
-                  _buildTextField('Apartment', _apartmentController),
-                  const SizedBox(height: 8),
-                  _buildTextField('Street', _streetController),
-                  const SizedBox(height: 8),
-                  _buildTextField('City', _cityController),
-                  const SizedBox(height: 12),
-                  ElevatedButton(
-                    onPressed: _updateAddress,
-                    child: const Text('Save'),
-                  )
-                ],
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: const [
-                      Icon(Icons.home_outlined),
-                      SizedBox(width: 8),
-                      Text('Home', style: TextStyle(fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text('$building ${apartment.isNotEmpty ? ", $apartment" : ""}'),
-                  Text(street),
-                  Text(city),
-                  const SizedBox(height: 8),
-                  GestureDetector(
-                    onTap: () => setState(() => isEditing = true),
-                    child: const Text(
-                      "Edit Address",
-                      style: TextStyle(color: Colors.purple),
+        child:
+            isEditing
+                ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTextField('Building', _buildingController),
+                    const SizedBox(height: 8),
+                    _buildTextField('Apartment', _apartmentController),
+                    const SizedBox(height: 8),
+                    _buildTextField('Street', _streetController),
+                    const SizedBox(height: 8),
+                    _buildTextField('City', _cityController),
+                    const SizedBox(height: 12),
+                    ElevatedButton(
+                      onPressed: _updateAddress,
+                      child: const Text('Save'),
                     ),
-                  )
-                ],
-              ),
+                  ],
+                )
+                : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(CupertinoIcons.home),
+                        SizedBox(width: 13),
+                        Text(
+                          'Home',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '$building ${apartment.isNotEmpty ? ", $apartment" : ""}',
+                    ),
+                    Text(street),
+                    Text(city),
+                    const SizedBox(height: 8),
+                    GestureDetector(
+                      onTap: () => setState(() => isEditing = true),
+                      child: const Text(
+                        "Edit Address",
+                        style: TextStyle(color: Colors.purple),
+                      ),
+                    ),
+                  ],
+                ),
       ),
     );
   }
@@ -152,9 +167,10 @@ class _EditaddState extends State<Editadd> {
         title: const Text('Saved Addresses'),
         leading: const BackButton(),
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(child: _buildAddressCard()),
+      body:
+          isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(child: _buildAddressCard()),
     );
   }
 }

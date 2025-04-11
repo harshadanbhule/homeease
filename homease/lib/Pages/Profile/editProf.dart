@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:homease/login.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -37,10 +38,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<void> _loadUserData() async {
-    final doc = await FirebaseFirestore.instance
-        .collection('user_locations')
-        .doc(user!.uid)
-        .get();
+    final doc =
+        await FirebaseFirestore.instance
+            .collection('user_locations')
+            .doc(user!.uid)
+            .get();
 
     if (doc.exists) {
       final data = doc.data()!;
@@ -64,10 +66,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
           .collection('user_locations')
           .doc(user!.uid)
           .update({
-        'firstName': _firstNameController.text.trim(),
-        'lastName': _lastNameController.text.trim(),
-        'phoneNumber': _phoneController.text.trim(),
-      });
+            'firstName': _firstNameController.text.trim(),
+            'lastName': _lastNameController.text.trim(),
+            'phoneNumber': _phoneController.text.trim(),
+          });
 
       setState(() {
         firstName = _firstNameController.text;
@@ -78,24 +80,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
         editPhone = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Profile updated")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Profile updated")));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Update failed: $e")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Update failed: $e")));
     }
   }
 
   Future<void> _deleteAccount() async {
     try {
       await user!.delete();
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()),);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Account deletion failed: $e")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Account deletion failed: $e")));
     }
   }
 
@@ -107,15 +109,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        children: [
-          Expanded(child: child),
-          const SizedBox(width: 8),
-          TextButton(
-            onPressed: onEdit,
-            child: Text(isEditing ? 'Save' : 'Edit'),
-          ),
-        ],
+      child: Container(
+        child: Row(
+          children: [
+            Expanded(child: child),
+            const SizedBox(width: 8),
+            Container(
+              height: 35,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.black54, width: 1.5),
+              ),
+              child: TextButton(
+                onPressed: onEdit,
+                child: Text(
+                  textAlign: TextAlign.center,
+                  isEditing ? 'Save' : 'Edit',
+                  selectionColor: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -128,121 +143,144 @@ class _EditProfilePageState extends State<EditProfilePage> {
         centerTitle: true,
         leading: const BackButton(),
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildField(
-                          label: 'First Name',
-                          isEditing: editFirstName,
-                          onEdit: () {
-                            setState(() {
-                              if (editFirstName) _updateProfile();
-                              editFirstName = !editFirstName;
-                            });
-                          },
-                          child: editFirstName
-                              ? TextField(controller: _firstNameController)
-                              : ListTile(
-                                  title: Text(firstName),
-                                  subtitle: const Text("First Name"),
-                                ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: _buildField(
-                          label: 'Last Name',
-                          isEditing: editLastName,
-                          onEdit: () {
-                            setState(() {
-                              if (editLastName) _updateProfile();
-                              editLastName = !editLastName;
-                            });
-                          },
-                          child: editLastName
-                              ? TextField(controller: _lastNameController)
-                              : ListTile(
-                                  title: Text(lastName),
-                                  subtitle: const Text("Last Name"),
-                                ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  _buildField(
-                    label: "Phone Number",
-                    isEditing: editPhone,
-                    onEdit: () {
-                      setState(() {
-                        if (editPhone) _updateProfile();
-                        editPhone = !editPhone;
-                      });
-                    },
-                    child: editPhone
-                        ? IntlPhoneField(
-                            controller: _phoneController,
-                            decoration: const InputDecoration(
-                              labelText: 'Phone Number',
-                              border: OutlineInputBorder(),
-                            ),
-                            initialCountryCode: 'IN',
-                            onChanged: (phone) {},
-                          )
-                        : ListTile(
-                            title: Text(phone),
-                            subtitle: const Text("Phone Number"),
+      body:
+          isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildField(
+                            label: 'First Name',
+                            isEditing: editFirstName,
+                            onEdit: () {
+                              setState(() {
+                                if (editFirstName) _updateProfile();
+                                editFirstName = !editFirstName;
+                              });
+                            },
+                            child:
+                                editFirstName
+                                    ? TextField(
+                                      controller: _firstNameController,
+                                    )
+                                    : ListTile(
+                                      title: Text(firstName),
+                                      subtitle: const Text("First Name"),
+                                    ),
                           ),
-                  ),
-                  _buildField(
-                    label: "Email",
-                    isEditing: false,
-                    onEdit: () {
-                      // Email update logic goes here if needed
-                    },
-                    child: ListTile(
-                      title: Text(email),
-                      subtitle: const Text("Email"),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: _buildField(
+                            label: 'Last Name',
+                            isEditing: editLastName,
+                            onEdit: () {
+                              setState(() {
+                                if (editLastName) _updateProfile();
+                                editLastName = !editLastName;
+                              });
+                            },
+                            child:
+                                editLastName
+                                    ? TextField(controller: _lastNameController)
+                                    : ListTile(
+                                      title: Text(lastName),
+                                      subtitle: const Text("Last Name"),
+                                    ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const Divider(),
-                  ListTile(
-                    title: const Text("Change Password"),
-                    subtitle: const Text("Looking to change your current password?"),
-                    trailing: TextButton(
-                      onPressed: () {
-                        // Navigate to password change page
+                    Divider(thickness: 1, color: Colors.black26),
+                    _buildField(
+                      label: "Phone Number",
+                      isEditing: editPhone,
+                      onEdit: () {
+                        setState(() {
+                          if (editPhone) _updateProfile();
+                          editPhone = !editPhone;
+                        });
                       },
-                      child: const Text("Change"),
+                      child:
+                          editPhone
+                              ? IntlPhoneField(
+                                controller: _phoneController,
+                                decoration: const InputDecoration(
+                                  labelText: 'Phone Number',
+                                  border: OutlineInputBorder(),
+                                ),
+                                initialCountryCode: 'IN',
+                                onChanged: (phone) {},
+                              )
+                              : ListTile(
+                                title: Text(phone),
+                                subtitle: const Text("Phone Number"),
+                              ),
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  TextButton(
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()),);
-                    },
-                    child: const Text(
-                      "Logout",
-                      style: TextStyle(fontSize: 16),
+                    Divider(thickness: 1, color: Colors.black26),
+                    _buildField(
+                      label: "Email",
+                      isEditing: false,
+                      onEdit: () {
+                        // Email update logic goes here if needed
+                      },
+                      child: ListTile(
+                        title: Text(email),
+                        subtitle: const Text("Email"),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextButton(
-                    onPressed: _deleteAccount,
-                    child: const Text(
-                      "Delete your account",
-                      style: TextStyle(color: Colors.red),
+                    const Divider(),
+                    ListTile(
+                      title: const Text("Change Password"),
+                      subtitle: const Text(
+                        "Looking to change your current password?",
+                      ),
+                      trailing: TextButton(
+                        onPressed: () {
+                          // Navigate to password change page
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          height: 35,
+                          width: 75,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.black54, width: 1.5),
+                          ),
+                          child: const Text("Change"),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 100,),
+                    
+                    TextButton(
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signOut();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Login()),
+                        );
+                      },
+                      child: Text(
+                        "Logout",
+                        style: GoogleFonts.inter(fontSize: 20,fontWeight: FontWeight.w700,color: Colors.black),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextButton(
+                      onPressed: _deleteAccount,
+                      child: Text(
+                        "Delete your account",
+                        style: GoogleFonts.inter(fontWeight: FontWeight.w500,fontSize: 15,color:Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
     );
   }
 }
