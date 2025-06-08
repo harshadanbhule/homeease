@@ -237,8 +237,17 @@ class _UserFormPageState extends State<UserFormPage> {
               IntlPhoneField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  hintText: 'Enter your phone number',
                 ),
                 initialCountryCode: 'IN',
+                onChanged: (phone) {
+                  setState(() {
+                    phoneNumberWithCode = phone.completeNumber;
+                  });
+                },
+                onCountryChanged: (country) {
+                  print('Selected country: ${country.name}');
+                },
                 pickerDialogStyle: PickerDialogStyle(
                   backgroundColor: Colors.white,
                   searchFieldInputDecoration: InputDecoration(
@@ -252,8 +261,15 @@ class _UserFormPageState extends State<UserFormPage> {
                   searchFieldPadding: EdgeInsets.symmetric(horizontal: 16),
                   listTilePadding: EdgeInsets.symmetric(vertical: 10),
                 ),
-                onChanged: (phone) => phoneNumberWithCode = phone.completeNumber,
-                validator: (phone) => phone == null || phone.number.isEmpty ? 'Enter Phone Number' : null,
+                validator: (phone) {
+                  if (phone == null || phone.number.isEmpty) {
+                    return 'Please enter your phone number';
+                  }
+                  if (phone.number.length < 10) {
+                    return 'Please enter a valid phone number';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 30),
 
@@ -351,7 +367,7 @@ SizedBox(height: 30),
                   ),
                   child: Text.rich(
                     TextSpan(
-                      text: "By selecting Next, I agree to Homease’s ",
+                      text: "By selecting Next, I agree to Homease's ",
                       style: GoogleFonts.poppins(fontSize: 13),
                       children: [
                         TextSpan(

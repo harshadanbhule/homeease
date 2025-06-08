@@ -3,7 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:homeease_provider/Pages/homepage.dart';
 import 'package:homeease_provider/controllers/UserLocationController.dart';
+import 'package:homeease_provider/controllers/UserProfileController.dart';
 import 'package:homeease_provider/controllers/location_controller.dart';
+import 'package:homeease_provider/controllers/userDetail_controller.dart';
 import 'package:homeease_provider/info/Home.dart';
 import 'package:homeease_provider/info/form.dart';
 import 'package:homeease_provider/login.dart';
@@ -23,6 +25,8 @@ Future<void> main() async {
   }
    Get.put(UserLocationController());
   Get.put(LocationController()); 
+  Get.put(UserDetailController());
+  Get.put(UserProfileController());
   runApp(const MyApp());
 }
 

@@ -8,6 +8,9 @@ class OrderModel {
   final double totalAmount;
   final DateTime createdAt;
   final String serviceImage;
+  final bool isAccepted;
+  final String? acceptedBy;
+  final DateTime? acceptedAt;
 
   OrderModel({
     required this.id,
@@ -16,7 +19,10 @@ class OrderModel {
     required this.quantity,
     required this.totalAmount,
     required this.createdAt,
-    required this.serviceImage
+    required this.serviceImage,
+    this.isAccepted = false,
+    this.acceptedBy,
+    this.acceptedAt,
   });
 
   factory OrderModel.fromMap(String id, Map<String, dynamic> data) {
@@ -28,7 +34,9 @@ class OrderModel {
       totalAmount: (data['totalAmount'] as num?)?.toDouble() ?? 0.0,
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       serviceImage: data['serviceImage'] as String? ?? '',
-
+      isAccepted: data['isAccepted'] ?? false,
+      acceptedBy: data['acceptedBy'],
+      acceptedAt: (data['acceptedAt'] as Timestamp?)?.toDate(),
     );
   }
 }

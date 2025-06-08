@@ -85,6 +85,8 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
     .doc(user.uid)
     .set(userLocation.toMap());
 
+     Get.find<UserLocationController>().setUserLocation(userLocation);
+
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Location saved to Firestore!")));
 

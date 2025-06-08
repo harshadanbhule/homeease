@@ -2,11 +2,17 @@ import 'package:get/get.dart';
 import 'package:homeease_provider/DataBase/user_location_model.dart';
 
 class UserLocationController extends GetxController {
-  var userLocation = Rxn<UserLocationModel>();
+  // Observable model
+  final Rxn<UserLocationModel> _userLocation = Rxn<UserLocationModel>();
 
+  // Setter
   void setUserLocation(UserLocationModel location) {
-    userLocation.value = location;
+    _userLocation.value = location;
   }
 
-  UserLocationModel? get data => userLocation.value;
+  // Getter
+  UserLocationModel? get data => _userLocation.value;
+
+  // Optional: Add an observable getter for reactive widgets
+  Rxn<UserLocationModel> get userLocation => _userLocation;
 }

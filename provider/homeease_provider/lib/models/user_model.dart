@@ -1,3 +1,5 @@
+import 'package:latlong2/latlong.dart';
+
 class UserModel {
   final String firstName;
   final String lastName;
@@ -6,6 +8,7 @@ class UserModel {
   final String? apartment;
   final String street;
   final bool isHome;
+  final LatLng? coordinates;
 
   UserModel({
     required this.firstName,
@@ -15,6 +18,7 @@ class UserModel {
     required this.apartment,
     required this.street,
     required this.isHome,
+    this.coordinates,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> data) {
@@ -26,6 +30,10 @@ class UserModel {
       apartment: data['apartment'],
       street: data['street'] ?? '',
       isHome: data['isHome'] ?? false,
+      coordinates: data['coordinates'] != null ? LatLng(
+        data['coordinates']['latitude'] ?? 0.0,
+        data['coordinates']['longitude'] ?? 0.0,
+      ) : null,
     );
   }
 
