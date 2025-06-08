@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.17
-  intl: 0.19.0 
+  intl: 0.20.2 
   razorpay_flutter: 1.4.0
   google_fonts: ^6.2.1
   smooth_page_indicator: ^1.2.1
