@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:homeease_provider/controllers/UserLocationController.dart';
+import 'package:homeease_provider/pages/shimar.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,6 +42,7 @@ class LocationDetailsPage extends StatefulWidget {
 }
 
 class _LocationDetailsPageState extends State<LocationDetailsPage> {
+  final userData = Get.find<UserLocationController>().data;
   final _formKey = GlobalKey<FormState>();
   final _buildingController = TextEditingController();
   final _apartmentController = TextEditingController();
@@ -86,7 +90,7 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
 
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (_) => OrdersPage()),
+          MaterialPageRoute(builder: (_) => ShimarPage()),
           (route) => false);
     } catch (e) {
       ScaffoldMessenger.of(context)

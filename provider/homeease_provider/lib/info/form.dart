@@ -22,7 +22,7 @@ class _UserFormPageState extends State<UserFormPage> {
 
 
   final List<String> serviceNames = [
-    'Appliance',
+    'AC',
     'Painting',
     'Plumbing',
     'Electronics',

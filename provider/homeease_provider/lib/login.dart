@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
         final String uid = userCredential.user!.uid;
 
         final docSnapshot = await FirebaseFirestore.instance
-            .collection('user_locations')
+            .collection('worker_locations')
             .doc(uid)
             .get();
 
@@ -44,7 +44,7 @@ class _LoginState extends State<Login> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Login successful. Redirecting to Home.")),
           );
-          Navigator.pushReplacementNamed(context, '/homedemo');
+          Navigator.pushReplacementNamed(context, '/shimar');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Login successful. Please complete your location form.")),

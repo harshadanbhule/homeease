@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:homeease_provider/Pages/homepage.dart';
+import 'package:homeease_provider/controllers/UserLocationController.dart';
 import 'package:homeease_provider/controllers/location_controller.dart';
 import 'package:homeease_provider/info/Home.dart';
 import 'package:homeease_provider/info/form.dart';
 import 'package:homeease_provider/login.dart';
+import 'package:homeease_provider/pages/shimar.dart';
 import 'package:homeease_provider/register.dart';
 import 'package:homeease_provider/splash.dart';
 import 'firebase_options.dart';  
@@ -18,6 +21,7 @@ Future<void> main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
+   Get.put(UserLocationController());
   Get.put(LocationController()); 
   runApp(const MyApp());
 }
@@ -34,13 +38,13 @@ class MyApp extends StatelessWidget {
         routes: {
         '/login': (context) => Login(),
           '/register': (context) =>  Register(),
-          '/home':(context) => Home(),
+         // '/home':(context) => Homepage(),
           '/splash':(context)=> Splash(),
           '/form':(context)=> UserFormPage(),
-          '/homedemo':(context)=>OrdersPage()
+          '/homedemo':(context)=>Homepage(),
          // '/home2':(context)=>CustomLoading(),
-          //'/shimar':(context)=>ShimarPage()
-          //'/location':(context)=> LocationMapPage()
+          '/shimar':(context)=>ShimarPage(),
+          //'/orderpage':(context)=> OrdersPage()
 
 
 
