@@ -51,7 +51,7 @@ class _InvitePageState extends State<InvitePage> {
                   Text("• ", style: TextStyle(fontSize: 16)),
                   Expanded(
                     child: Text(
-                      "Get 50% off upto \$20 after your friend’s 1st order",
+                      "Get 50% off upto \₹ 100 after your friend’s 1st order",
                       style: GoogleFonts.poppins(fontSize: 16, color: Colors.black54),
                     ),
                   ),

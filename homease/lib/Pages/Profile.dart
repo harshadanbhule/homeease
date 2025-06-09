@@ -10,6 +10,7 @@ import 'package:homease/Custom/custom_nav_bar.dart';
 import 'package:homease/Pages/Profile/editProf.dart';
 import 'package:homease/Pages/Profile/editadd.dart';
 import 'package:homease/Pages/Profile/invite.dart';
+import 'package:homease/Pages/Profile/youtube_player_page.dart';
 import 'package:homease/controllers/location_controller.dart';
 
 class Profile extends StatefulWidget {
@@ -37,10 +38,11 @@ class _ProfileState extends State<Profile> {
         email = user.email ?? '';
       });
 
-      final doc = await FirebaseFirestore.instance
-          .collection('user_locations')
-          .doc(user.uid)
-          .get();
+      final doc =
+          await FirebaseFirestore.instance
+              .collection('user_locations')
+              .doc(user.uid)
+              .get();
 
       final data = doc.data();
       if (data != null) {
@@ -76,18 +78,22 @@ class _ProfileState extends State<Profile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Obx(() => Text(
-                            'Hello ${locationController.fullName.value}',
-                            style: GoogleFonts.poppins(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800,
-                              color: Color.fromRGBO(35, 51, 74, 1),
-                            ),
-                          )),
+                      Obx(
+                        () => Text(
+                          'Hello ${locationController.fullName.value}',
+                          style: GoogleFonts.poppins(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                            color: Color.fromRGBO(35, 51, 74, 1),
+                          ),
+                        ),
+                      ),
                       const SizedBox(height: 4),
                       Text(
                         email.isNotEmpty ? email : 'Loading email...',
-                        style: const TextStyle(color: Color.fromRGBO(119, 119, 119, 1)),
+                        style: const TextStyle(
+                          color: Color.fromRGBO(119, 119, 119, 1),
+                        ),
                       ),
                     ],
                   ),
@@ -103,10 +109,11 @@ class _ProfileState extends State<Profile> {
 
             // Invite card
             GestureDetector(
-              onTap: () => Navigator.push(
-  context,
-  MaterialPageRoute(builder: (context) => const InvitePage()),
-),
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const InvitePage()),
+                  ),
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -127,7 +134,7 @@ class _ProfileState extends State<Profile> {
                     SizedBox(height: 8),
                     Text(
                       'Introduce your friends to the easiest way to find and hire professionals for your needs.',
-                      style:GoogleFonts.poppins(color: Colors.grey),
+                      style: GoogleFonts.poppins(color: Colors.grey),
                     ),
                   ],
                 ),
@@ -136,25 +143,64 @@ class _ProfileState extends State<Profile> {
 
             const SizedBox(height: 30),
 
-            
             GestureDetector(
-              onTap: () => Navigator.push(
-  context,
-  MaterialPageRoute(builder: (context) => const EditProfilePage()),
-),
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EditProfilePage(),
+                    ),
+                  ),
 
-              child: _buildMenuItem(Icons.person, 'Edit Profile', Color.fromRGBO(37, 183, 211, 1))),
+              child: _buildMenuItem(
+                Icons.person,
+                'Edit Profile',
+                Color.fromRGBO(37, 183, 211, 1),
+              ),
+            ),
             GestureDetector(
-              onTap: () => Navigator.push(
-  context,
-  MaterialPageRoute(builder: (context) => const Editadd()),
-),
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Editadd()),
+                  ),
 
-              child: _buildMenuItem(Icons.location_on, 'Saved Addresses', Color.fromRGBO(51, 122, 251, 1))),
-            _buildMenuItem(Icons.notifications, 'Notifications', Color.fromRGBO(82, 102, 141, 1)),
-            _buildMenuItem(Icons.favorite, "Saved Services", Color.fromRGBO(248, 79, 49, 1)),
-            _buildMenuItem(Icons.star, 'Rate our app', Color.fromRGBO(100, 27, 180, 1)),
-            _buildMenuItem(Icons.info, 'About Us', Color.fromRGBO(100, 27, 180, 1)),
+              child: _buildMenuItem(
+                Icons.location_on,
+                'Saved Addresses',
+                Color.fromRGBO(51, 122, 251, 1),
+              ),
+            ),
+            _buildMenuItem(
+              Icons.notifications,
+              'Notifications',
+              Color.fromRGBO(82, 102, 141, 1),
+            ),
+            _buildMenuItem(
+              Icons.favorite,
+              "Saved Services",
+              Color.fromRGBO(248, 79, 49, 1),
+            ),
+            GestureDetector(
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const YoutubePlayerPage(),
+                    ),
+                  ),
+              child: _buildMenuItem(
+                Icons.star,
+                'Rate our app',
+                const Color.fromRGBO(100, 27, 180, 1),
+              ),
+            ),
+
+            _buildMenuItem(
+              Icons.info,
+              'About Us',
+              Color.fromRGBO(100, 27, 180, 1),
+            ),
 
             const SizedBox(height: 40),
             Center(

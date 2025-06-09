@@ -34,6 +34,8 @@ dependencies:
   get: ^4.6.6
   shimmer: ^3.0.0
   shared_preferences: ^2.5.3
+  youtube_player_flutter: ^9.1.1
+  youtube_explode_dart: ^2.3.9
 
 dev_dependencies:
   flutter_test:
