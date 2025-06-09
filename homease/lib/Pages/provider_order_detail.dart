@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ProviderOrderDetail extends StatefulWidget {
   final String customerName;
@@ -159,15 +160,35 @@ class _ProviderOrderDetailState extends State<ProviderOrderDetail> {
   }
 
   Future<void> _makePhoneCall() async {
-    final Uri phoneUri = Uri(scheme: 'tel', path: widget.customerPhone);
-    try {
-      if (await canLaunchUrl(phoneUri)) {
-        await launchUrl(phoneUri);
-      } else {
-        throw 'Could not launch $phoneUri';
+    // Request phone permission on Android
+    if (await Permission.phone.request().isGranted) {
+      final Uri phoneUri = Uri(scheme: 'tel', path: widget.customerPhone);
+      try {
+        if (await canLaunchUrl(phoneUri)) {
+          await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Could not launch phone dialer'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error making phone call: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
-    } catch (e) {
-      debugPrint('Error making phone call: $e');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Phone permission is required to make calls'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 

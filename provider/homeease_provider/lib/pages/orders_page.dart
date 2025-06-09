@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:homeease_provider/Custom/custom_nav_bar.dart';
 import 'package:homeease_provider/controllers/userDetail_controller.dart';
 import 'package:homeease_provider/pages/order_details_page.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../controllers/order_controller.dart';
 import '../models/order_model.dart';
 import '../models/user_model.dart';
 import '../services/call_service.dart';
 import 'package:get/get.dart';
+import 'package:app_settings/app_settings.dart';
 
 class OrdersPage extends StatefulWidget {
   
@@ -35,8 +37,15 @@ void initState() {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.yellow,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Obx(() {
-          return Text(userDetailController.serviceName.value);
+          return Text(
+            userDetailController.serviceName.value,
+            style: TextStyle(color: Colors.black),
+          );
         }),
       ),
       body: FutureBuilder<List<OrderDetails>>(
@@ -252,12 +261,6 @@ void initState() {
                         onPressed: () async {
                           try {
                             await callService.startCall(user.phoneNumber);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Initiating call to ${user.phoneNumber}'),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(

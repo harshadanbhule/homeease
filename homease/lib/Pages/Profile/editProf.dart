@@ -116,14 +116,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
             const SizedBox(width: 8),
             Container(
               height: 35,
+              color: Colors.deepPurple,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.black54, width: 1.5),
+                
               ),
               child: TextButton(
                 onPressed: onEdit,
                 child: Text(
                   textAlign: TextAlign.center,
+                  
                   isEditing ? 'Save' : 'Edit',
                   selectionColor: Colors.black,
                 ),
@@ -139,10 +142,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit account info'),
+        title: const Text('Edit Profile'),
         centerTitle: true,
-        leading: const BackButton(),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
       ),
+      backgroundColor: const Color.fromARGB(255, 245, 245, 245),
       body:
           isLoading
               ? const Center(child: CircularProgressIndicator())
@@ -150,137 +156,224 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
+                    // -- First & Last Name Fields --
                     Row(
                       children: [
                         Expanded(
-                          child: _buildField(
-                            label: 'First Name',
+                          child: _buildEditableCard(
+                            title: 'First Name',
+                            value: firstName,
                             isEditing: editFirstName,
-                            onEdit: () {
+                            controller: _firstNameController,
+                            onToggle: () {
                               setState(() {
                                 if (editFirstName) _updateProfile();
                                 editFirstName = !editFirstName;
                               });
                             },
-                            child:
-                                editFirstName
-                                    ? TextField(
-                                      controller: _firstNameController,
-                                    )
-                                    : ListTile(
-                                      title: Text(firstName),
-                                      subtitle: const Text("First Name"),
-                                    ),
                           ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
-                          child: _buildField(
-                            label: 'Last Name',
+                          child: _buildEditableCard(
+                            title: 'Last Name',
+                            value: lastName,
                             isEditing: editLastName,
-                            onEdit: () {
+                            controller: _lastNameController,
+                            onToggle: () {
                               setState(() {
                                 if (editLastName) _updateProfile();
                                 editLastName = !editLastName;
                               });
                             },
-                            child:
-                                editLastName
-                                    ? TextField(controller: _lastNameController)
-                                    : ListTile(
-                                      title: Text(lastName),
-                                      subtitle: const Text("Last Name"),
-                                    ),
                           ),
                         ),
                       ],
                     ),
-                    Divider(thickness: 1, color: Colors.black26),
-                    _buildField(
-                      label: "Phone Number",
+                    const SizedBox(height: 16),
+
+                    // -- Phone Number --
+                    _buildEditableCard(
+                      title: 'Phone Number',
+                      value: phone,
                       isEditing: editPhone,
-                      onEdit: () {
+                      controller: _phoneController,
+                      onToggle: () {
                         setState(() {
                           if (editPhone) _updateProfile();
                           editPhone = !editPhone;
                         });
                       },
-                      child:
-                          editPhone
-                              ? IntlPhoneField(
-                                controller: _phoneController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Phone Number',
-                                  border: OutlineInputBorder(),
-                                ),
-                                initialCountryCode: 'IN',
-                                onChanged: (phone) {},
-                              )
-                              : ListTile(
-                                title: Text(phone),
-                                subtitle: const Text("Phone Number"),
-                              ),
+                      isPhone: true,
                     ),
-                    Divider(thickness: 1, color: Colors.black26),
-                    _buildField(
-                      label: "Email",
-                      isEditing: false,
-                      onEdit: () {
-                        // Email update logic goes here if needed
+
+                    // -- Email (non-editable) --
+                    _buildEditableCard(
+                      title: 'Email',
+                      value: email,
+                      isEditing: editEmail,
+                      controller: _emailController,
+                      onToggle: () {
+                        setState(() {
+                          if (editEmail) {
+                            email = _emailController.text.trim();
+                            // You can add FirebaseAuth updateEmail logic here if needed
+                          }
+                          editEmail = !editEmail;
+                        });
                       },
-                      child: ListTile(
-                        title: Text(email),
-                        subtitle: const Text("Email"),
-                      ),
                     ),
-                    const Divider(),
-                    ListTile(
-                      title: const Text("Change Password"),
-                      subtitle: const Text(
-                        "Looking to change your current password?",
-                      ),
-                      trailing: TextButton(
-                        onPressed: () {
-                          // Navigate to password change page
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          height: 35,
-                          width: 75,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.black54, width: 1.5),
+
+                    // -- Change Password --
+                    _buildActionCard(
+                      title: "Change Password",
+                      subtitle: "Want to change your current password?",
+                      buttonText: "Change",
+                      onPressed: () {
+                        // Navigate to password change screen
+                      },
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // -- Logout & Delete Account --
+                    GestureDetector(
+                      onTap: () async {
+                        await FirebaseAuth.instance.signOut();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (_) => const Login()),
+                        );
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 50,
+                        width: MediaQuery.sizeOf(context).width - 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Color.fromARGB(255, 245, 245, 245),
+                          border: Border.all(
+                            color: const Color.fromRGBO(100, 27, 180, 1),
+                            width: 1,
                           ),
-                          child: const Text("Change"),
+                        ),
+                        child: Text(
+                          "Logout",
+                          style: GoogleFonts.inter(
+                            color: const Color.fromRGBO(100, 27, 180, 1),
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 100,),
-                    
-                    TextButton(
-                      onPressed: () async {
-                        await FirebaseAuth.instance.signOut();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Login()),
-                        );
-                      },
-                      child: Text(
-                        "Logout",
-                        style: GoogleFonts.inter(fontSize: 20,fontWeight: FontWeight.w700,color: Colors.black),
-                      ),
-                    ),
+
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: _deleteAccount,
-                      child: Text(
+                      child: const Text(
                         "Delete your account",
-                        style: GoogleFonts.inter(fontWeight: FontWeight.w500,fontSize: 15,color:Colors.black),
+                        style: TextStyle(color: Colors.red),
                       ),
                     ),
                   ],
                 ),
               ),
+    );
+  }
+
+  Widget _buildEditableCard({
+    required String title,
+    required String value,
+    required bool isEditing,
+    required TextEditingController controller,
+    required VoidCallback onToggle,
+    bool isPhone = false,
+  }) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 2,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 6),
+            isEditing
+                ? isPhone
+                    ? IntlPhoneField(
+                      controller: controller,
+                      decoration: const InputDecoration(
+                        labelText: 'Phone Number',
+                        border: OutlineInputBorder(),
+                      ),
+                      initialCountryCode: 'IN',
+                    )
+                    : TextField(
+                      controller: controller,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                      ),
+                    )
+                : Text(value, style: GoogleFonts.inter(fontSize: 16)),
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerRight,
+              child: OutlinedButton(
+                onPressed: onToggle,
+                style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(isEditing ? 'Save' : 'Edit'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStaticCard({required String title, required String value}) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 2,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 6),
+            Text(value, style: GoogleFonts.inter(fontSize: 16)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionCard({
+    required String title,
+    required String subtitle,
+    required String buttonText,
+    required VoidCallback onPressed,
+  }) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 2,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: ListTile(
+        title: Text(
+          title,
+          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+        ),
+        subtitle: Text(subtitle),
+        trailing: OutlinedButton(onPressed: onPressed, child: Text(buttonText)),
+      ),
     );
   }
 }

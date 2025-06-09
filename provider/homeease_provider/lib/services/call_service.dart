@@ -1,5 +1,5 @@
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class CallService {
   RTCPeerConnection? peerConnection;
@@ -7,65 +7,50 @@ class CallService {
   MediaStream? remoteStream;
 
   Future<void> initializeCall() async {
-    // Request necessary permissions
-    await Permission.microphone.request();
-    await Permission.camera.request();
+    try {
+      localStream = await navigator.mediaDevices.getUserMedia({
+        'audio': true,
+        'video': true
+      });
 
-    // Configure WebRTC
-    final configuration = {
-      'iceServers': [
-        {
-          'urls': [
-            'stun:stun1.l.google.com:19302',
-            'stun:stun2.l.google.com:19302'
-          ]
-        }
-      ]
-    };
+      final configuration = {
+        'iceServers': [
+          {'urls': 'stun:stun.l.google.com:19302'},
+        ]
+      };
 
-    // Create peer connection
-    peerConnection = await createPeerConnection(configuration);
+      peerConnection = await createPeerConnection(configuration);
 
-    // Get local stream
-    localStream = await navigator.mediaDevices.getUserMedia({
-      'audio': true,
-      'video': false
-    });
-
-    // Add local stream to peer connection
-    localStream!.getTracks().forEach((track) {
-      peerConnection!.addTrack(track, localStream!);
-    });
-
-    // Handle incoming stream
-    peerConnection!.onTrack = (RTCTrackEvent event) {
-      remoteStream = event.streams[0];
-    };
+      localStream!.getTracks().forEach((track) {
+        peerConnection!.addTrack(track, localStream!);
+      });
+    } catch (e) {
+      print('Error initializing call: $e');
+    }
   }
 
   Future<void> startCall(String phoneNumber) async {
     try {
-      await initializeCall();
-
-      // Create offer
-      RTCSessionDescription offer = await peerConnection!.createOffer();
-      await peerConnection!.setLocalDescription(offer);
-
-      // Here you would typically send the offer to your signaling server
-      // and handle the answer from the remote peer
-      // For now, we'll just log the offer
-      print('Call offer created for $phoneNumber');
+      // Clean the phone number - just remove "Phone: " prefix
+      String cleanNumber = phoneNumber.replaceAll('Phone: ', '').trim();
+      
+      // Create the tel URI
+      final Uri telUri = Uri.parse('tel:$cleanNumber');
+      
+      // Try to launch the dialer
+      if (await canLaunchUrl(telUri)) {
+        await launchUrl(telUri);
+      } else {
+        throw 'Could not open phone dialer';
+      }
     } catch (e) {
-      print('Error starting call: $e');
+      print('Error in startCall: $e');
+      throw 'Could not make call. Please try again.';
     }
   }
 
   void endCall() {
     localStream?.dispose();
-    remoteStream?.dispose();
     peerConnection?.close();
-    localStream = null;
-    remoteStream = null;
-    peerConnection = null;
   }
 } 
