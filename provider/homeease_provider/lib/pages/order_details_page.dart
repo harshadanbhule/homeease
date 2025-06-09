@@ -378,8 +378,10 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.yellow,
-        title: Text('Order Details'),
+        backgroundColor: const Color.fromRGBO(100, 27, 180, 1),
+        title: Text('Order Details',style: TextStyle(
+          color: Colors.white
+        ),),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -407,10 +409,10 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                           ElevatedButton(
                             onPressed: _acceptOrder,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
+                              backgroundColor: const Color.fromRGBO(100, 27, 180, 1),
                               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                             ),
-                            child: Text('Accept Order'),
+                            child: Text('Accept Order',style: TextStyle(color: Colors.white),),
                           )
                         else
                           Container(

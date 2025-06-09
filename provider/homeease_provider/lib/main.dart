@@ -6,15 +6,12 @@ import 'package:homeease_provider/controllers/UserLocationController.dart';
 import 'package:homeease_provider/controllers/UserProfileController.dart';
 import 'package:homeease_provider/controllers/location_controller.dart';
 import 'package:homeease_provider/controllers/userDetail_controller.dart';
-import 'package:homeease_provider/info/Home.dart';
 import 'package:homeease_provider/info/form.dart';
 import 'package:homeease_provider/login.dart';
 import 'package:homeease_provider/pages/shimar.dart';
 import 'package:homeease_provider/register.dart';
 import 'package:homeease_provider/splash.dart';
 import 'firebase_options.dart';  
-import 'pages/orders_page.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

@@ -1,9 +1,8 @@
-// lib/widgets/custom_nav_bar.dart
+
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:homeease_provider/Pages/homepage.dart';
+import 'package:homeease_provider/pages/homepage.dart';
 import 'package:homeease_provider/pages/course.dart';
 import 'package:homeease_provider/pages/orders_page.dart';
 import 'package:homeease_provider/pages/profile.dart';
@@ -21,19 +20,27 @@ class CustomNavBar extends StatelessWidget {
     switch (index) {
       case 0:
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const Homepage()));
+          context,
+          MaterialPageRoute(builder: (_) => const Homepage()),
+        );
         break;
       case 1:
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => OrdersPage()));
+          context,
+          MaterialPageRoute(builder: (_) => OrdersPage()),
+        );
         break;
       case 2:
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const Course()));
+          context,
+          MaterialPageRoute(builder: (_) => const TutorialPage()),
+        );
         break;
       case 3:
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const Profile()));
+          context,
+          MaterialPageRoute(builder: (_) => const Profile()),
+        );
         break;
     }
   }
@@ -55,9 +62,10 @@ class CustomNavBar extends StatelessWidget {
           gap: 8,
           iconSize: MediaQuery.of(context).size.width < 400 ? 22 : 26,
           tabBackgroundColor: const Color.fromRGBO(100, 27, 180, 1),
-          padding: MediaQuery.of(context).size.width < 400
-              ? const EdgeInsets.symmetric(horizontal: 15, vertical: 8)
-              : const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          padding:
+              MediaQuery.of(context).size.width < 400
+                  ? const EdgeInsets.symmetric(horizontal: 15, vertical: 8)
+                  : const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           selectedIndex: selectedIndex,
           onTabChange: (index) => _navigateToPage(context, index),
           tabs: [
@@ -71,7 +79,10 @@ class CustomNavBar extends StatelessWidget {
               ),
               text: 'Home',
               textStyle: const TextStyle(
-                  fontWeight: FontWeight.w700, fontSize: 15, color: Colors.white),
+                fontWeight: FontWeight.w700,
+                fontSize: 15,
+                color: Colors.white,
+              ),
             ),
             GButton(
               icon: Icons.circle,
@@ -83,7 +94,10 @@ class CustomNavBar extends StatelessWidget {
               ),
               text: 'Bookings',
               textStyle: const TextStyle(
-                  fontWeight: FontWeight.w700, fontSize: 15, color: Colors.white),
+                fontWeight: FontWeight.w700,
+                fontSize: 15,
+                color: Colors.white,
+              ),
             ),
             GButton(
               icon: Icons.circle,
@@ -91,17 +105,20 @@ class CustomNavBar extends StatelessWidget {
               leading: Shimmer.fromColors(
                 baseColor: selectedIndex == 2 ? Colors.white : Colors.black,
                 highlightColor: Colors.grey.shade300,
-                child: SvgPicture.asset(
-                  "assets/homescreen/1538298822.svg",
-                  height: 30,
-                  width: 30,
+                child: Icon(
+                  Icons.video_camera_back_rounded, 
+                  size: 26,
                   color: selectedIndex == 2 ? Colors.white : Colors.black,
                 ),
               ),
-              text: 'ChatBot',
+              text: 'Tutorials',
               textStyle: const TextStyle(
-                  fontWeight: FontWeight.w700, fontSize: 15, color: Colors.white),
+                fontWeight: FontWeight.w700,
+                fontSize: 15,
+                color: Colors.white,
+              ),
             ),
+
             GButton(
               icon: Icons.circle,
               iconColor: Colors.transparent,
@@ -112,7 +129,10 @@ class CustomNavBar extends StatelessWidget {
               ),
               text: 'Profile',
               textStyle: const TextStyle(
-                  fontWeight: FontWeight.w700, fontSize: 15, color: Colors.white),
+                fontWeight: FontWeight.w700,
+                fontSize: 15,
+                color: Colors.white,
+              ),
             ),
           ],
         ),

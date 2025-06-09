@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:homeease_provider/Custom/custom_nav_bar.dart';
 import 'package:homeease_provider/controllers/userDetail_controller.dart';
 import 'package:homeease_provider/pages/order_details_page.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../controllers/order_controller.dart';
-import '../models/order_model.dart';
-import '../models/user_model.dart';
 import '../services/call_service.dart';
 import 'package:get/get.dart';
-import 'package:app_settings/app_settings.dart';
 
 class OrdersPage extends StatefulWidget {
   
@@ -35,16 +31,17 @@ void initState() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.yellow,
+        backgroundColor: const Color.fromRGBO(100, 27, 180, 1),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: const Color.fromARGB(255, 255, 255, 255)),
           onPressed: () => Navigator.pop(context),
         ),
         title: Obx(() {
           return Text(
             userDetailController.serviceName.value,
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255),fontWeight: FontWeight.w600),
           );
         }),
       ),
@@ -92,7 +89,7 @@ void initState() {
             child: Column(
               children: [
                 Container(
-                  color: Colors.yellow,
+                  color:const Color.fromRGBO(100, 27, 180, 1),
                   child: TabBar(
                     labelColor: Colors.black,
                     unselectedLabelColor: Colors.black54,
@@ -102,15 +99,15 @@ void initState() {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.pending_actions),
+                            Icon(Icons.pending_actions,color: Colors.white,),
                             SizedBox(width: 8),
-                            Text('Pending Orders'),
+                            Text('Pending Orders',style: TextStyle(color: Colors.white),),
                             if (pendingOrders.isNotEmpty)
                               Container(
                                 margin: EdgeInsets.only(left: 8),
                                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: Colors.orange,
+                                  color: Colors.green,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
@@ -125,9 +122,9 @@ void initState() {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.check_circle),
+                            Icon(Icons.check_circle,color: Colors.white,),
                             SizedBox(width: 8),
-                            Text('Accepted Orders'),
+                            Text('Accepted Orders',style: TextStyle(color: Colors.white),),
                             if (acceptedOrders.isNotEmpty)
                               Container(
                                 margin: EdgeInsets.only(left: 8),
