@@ -5,22 +5,22 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class ProviderLocation extends StatefulWidget {
-  final String providerName;
-  final String phoneNumber;
+class ProviderOrderDetail extends StatefulWidget {
+  final String customerName;
+  final String customerPhone;
   final String orderId;
-  final String providerId;
+  final String customerId;
   final String serviceName;
   final int quantity;
   final double totalAmount;
   final String status;
 
-  const ProviderLocation({
+  const ProviderOrderDetail({
     super.key,
-    required this.providerName,
-    required this.phoneNumber,
+    required this.customerName,
+    required this.customerPhone,
     required this.orderId,
-    required this.providerId,
+    required this.customerId,
     required this.serviceName,
     required this.quantity,
     required this.totalAmount,
@@ -28,10 +28,10 @@ class ProviderLocation extends StatefulWidget {
   });
 
   @override
-  State<ProviderLocation> createState() => _ProviderLocationState();
+  State<ProviderOrderDetail> createState() => _ProviderOrderDetailState();
 }
 
-class _ProviderLocationState extends State<ProviderLocation> {
+class _ProviderOrderDetailState extends State<ProviderOrderDetail> {
   final _localRenderer = RTCVideoRenderer();
   final _remoteRenderer = RTCVideoRenderer();
   bool _isCallActive = false;
@@ -105,8 +105,8 @@ class _ProviderLocationState extends State<ProviderLocation> {
           .doc(roomId)
           .set({
         'offer': offer.toMap(),
-        'customerId': FirebaseAuth.instance.currentUser?.uid ?? '',
-        'providerId': widget.providerId,
+        'providerId': FirebaseAuth.instance.currentUser?.uid ?? '',
+        'customerId': widget.customerId,
         'orderId': widget.orderId,
       });
 
@@ -159,7 +159,7 @@ class _ProviderLocationState extends State<ProviderLocation> {
   }
 
   Future<void> _makePhoneCall() async {
-    final Uri phoneUri = Uri(scheme: 'tel', path: widget.phoneNumber);
+    final Uri phoneUri = Uri(scheme: 'tel', path: widget.customerPhone);
     try {
       if (await canLaunchUrl(phoneUri)) {
         await launchUrl(phoneUri);
@@ -182,7 +182,7 @@ class _ProviderLocationState extends State<ProviderLocation> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Provider Details',
+          'Order Details',
           style: GoogleFonts.poppins(
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -226,7 +226,7 @@ class _ProviderLocationState extends State<ProviderLocation> {
               ),
             ),
 
-            // Provider Details Card
+            // Customer Details Card
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),
               padding: const EdgeInsets.all(16),
@@ -241,15 +241,15 @@ class _ProviderLocationState extends State<ProviderLocation> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Provider Details',
+                    'Customer Details',
                     style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 12),
-                  _buildDetailRow('Name', widget.providerName),
-                  _buildDetailRow('Phone', widget.phoneNumber),
+                  _buildDetailRow('Name', widget.customerName),
+                  _buildDetailRow('Phone', widget.customerPhone),
                 ],
               ),
             ),
