@@ -5,6 +5,7 @@ import 'package:homeease_provider/pages/order_details_page.dart';
 import '../controllers/order_controller.dart';
 import '../models/order_model.dart';
 import '../models/user_model.dart';
+import '../services/call_service.dart';
 import 'package:get/get.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -32,12 +33,10 @@ void initState() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.yellow,
         title: Obx(() {
-         
-            return Text( userDetailController.serviceName.value);
-          
+          return Text(userDetailController.serviceName.value);
         }),
       ),
       body: FutureBuilder<List<OrderDetails>>(
@@ -63,10 +62,9 @@ void initState() {
             final serviceImage = order.serviceImage.toLowerCase();
             final selectedService = userDetailController.serviceName.value.toLowerCase();
             
-            // Extract service type from path (e.g., "assets/subservice/cleaning/..." -> "cleaning")
             final pathParts = serviceImage.split('/');
             if (pathParts.length >= 3) {
-              final serviceType = pathParts[2]; // Get the service type from path
+              final serviceType = pathParts[2];
               return serviceType == selectedService;
             }
             return false;
@@ -80,37 +78,92 @@ void initState() {
           final acceptedOrders = filteredOrders.where((order) => order.order.isAccepted).toList();
           final pendingOrders = filteredOrders.where((order) => !order.order.isAccepted).toList();
 
-          return ListView(
-            children: [
-              if (acceptedOrders.isNotEmpty) ...[
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Accepted Orders',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                    ),
+          return DefaultTabController(
+            length: 2,
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.yellow,
+                  child: TabBar(
+                    labelColor: Colors.black,
+                    unselectedLabelColor: Colors.black54,
+                    indicatorColor: Colors.black,
+                    tabs: [
+                      Tab(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.pending_actions),
+                            SizedBox(width: 8),
+                            Text('Pending Orders'),
+                            if (pendingOrders.isNotEmpty)
+                              Container(
+                                margin: EdgeInsets.only(left: 8),
+                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: Colors.orange,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  '${pendingOrders.length}',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                      Tab(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.check_circle),
+                            SizedBox(width: 8),
+                            Text('Accepted Orders'),
+                            if (acceptedOrders.isNotEmpty)
+                              Container(
+                                margin: EdgeInsets.only(left: 8),
+                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  '${acceptedOrders.length}',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                ...acceptedOrders.map((orderDetail) => _buildOrderCard(orderDetail)),
-              ],
-              if (pendingOrders.isNotEmpty) ...[
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Pending Orders',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.orange,
-                    ),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      // Pending Orders Tab
+                      pendingOrders.isEmpty
+                          ? Center(child: Text('No pending orders'))
+                          : ListView.builder(
+                              itemCount: pendingOrders.length,
+                              itemBuilder: (context, index) {
+                                return _buildOrderCard(pendingOrders[index]);
+                              },
+                            ),
+                      // Accepted Orders Tab
+                      acceptedOrders.isEmpty
+                          ? Center(child: Text('No accepted orders'))
+                          : ListView.builder(
+                              itemCount: acceptedOrders.length,
+                              itemBuilder: (context, index) {
+                                return _buildOrderCard(acceptedOrders[index]);
+                              },
+                            ),
+                    ],
                   ),
                 ),
-                ...pendingOrders.map((orderDetail) => _buildOrderCard(orderDetail)),
               ],
-            ],
+            ),
           );
         },
       ),
@@ -121,6 +174,7 @@ void initState() {
   Widget _buildOrderCard(OrderDetails orderDetail) {
     final order = orderDetail.order;
     final user = orderDetail.user;
+    final callService = CallService();
 
     return Card(
       margin: const EdgeInsets.all(8),
@@ -136,31 +190,102 @@ void initState() {
             ),
           );
         },
-        child: ListTile(
-          title: Text(order.serviceName),
-          subtitle: Column(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      order.serviceName,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  if (order.isAccepted)
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        'Accepted',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                ],
+              ),
+              SizedBox(height: 12),
               Text("Name: ${user.fullName}"),
+              if (order.isAccepted) ...[
+                SizedBox(height: 8),
+                Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.green.withOpacity(0.3)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.phone, color: Colors.green, size: 20),
+                          SizedBox(width: 8),
+                          Text(
+                            "Phone: ${user.phoneNumber}",
+                            style: TextStyle(
+                              color: Colors.green[800],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          try {
+                            await callService.startCall(user.phoneNumber);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Initiating call to ${user.phoneNumber}'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Failed to start call: $e'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                        icon: Icon(Icons.call, color: Colors.white),
+                        label: Text('Call'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+              SizedBox(height: 8),
               Text("Location: ${user.fullLocation}"),
               Text("Coordinates: ${user.coordinates?.latitude ?? 'N/A'}, ${user.coordinates?.longitude ?? 'N/A'}"),
               Text("Quantity: ${order.quantity}"),
               Text("Total: ₹${order.totalAmount.toStringAsFixed(2)}"),
               Text("Ordered on: ${order.createdAt}"),
               Text("serviceImage : ${order.serviceImage}"),
-              if (order.isAccepted)
-                Container(
-                  margin: EdgeInsets.only(top: 8),
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    'Accepted',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
             ],
           ),
         ),

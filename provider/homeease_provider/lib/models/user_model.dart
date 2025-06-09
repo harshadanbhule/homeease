@@ -3,6 +3,7 @@ import 'package:latlong2/latlong.dart';
 class UserModel {
   final String firstName;
   final String lastName;
+  final String phoneNumber;
   final String address;
   final String building;
   final String? apartment;
@@ -13,6 +14,7 @@ class UserModel {
   UserModel({
     required this.firstName,
     required this.lastName,
+    required this.phoneNumber,
     required this.address,
     required this.building,
     required this.apartment,
@@ -25,6 +27,7 @@ class UserModel {
     return UserModel(
       firstName: data['firstName'] ?? '',
       lastName: data['lastName'] ?? '',
+      phoneNumber: data['phoneNumber'] ?? '',
       address: data['address'] ?? '',
       building: data['building'] ?? '',
       apartment: data['apartment'],

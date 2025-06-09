@@ -1,0 +1,145 @@
+name: homease
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  animated_splash_screen: ^1.3.0
+  curved_navigation_bar: ^1.0.6
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.0.17
+  intl: 0.19.0 
+  razorpay_flutter: 1.4.0
+  google_fonts: ^6.2.1
+  smooth_page_indicator: ^1.2.1
+  cupertino_icons: ^1.0.8
+  firebase_core: ^3.13.0
+  firebase_auth: ^5.5.2
+  device_preview: ^1.2.0
+  firebase_database: ^11.3.5
+  cloud_firestore: ^5.6.6
+  geolocator: ^11.0.0
+  geocoding: 3.0.0
+  permission_handler: ^11.0.0
+  intl_phone_field: ^3.2.0
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.0
+  card_loading: ^0.3.2
+  google_nav_bar: ^5.0.7
+  line_icons: ^2.0.3
+  get: ^4.6.6
+  shimmer: ^3.0.0
+  shared_preferences: ^2.5.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets  :
+    -  assets/splash/image.png
+    -  assets/splash/image.svg
+    -  assets/splash/image 2.png
+    -  assets/splash/image 2 (1).png
+    -  assets/splash/IMG_0157 1.png
+    -  assets/splash/image 3.png
+    -  assets/splash/image 4.png
+    -  assets/onboarding/Group 34487.png
+    -  assets/onboarding/Group 34489 (2).png
+    -  assets/onboarding/Group 34487 (1).png
+    -  assets/onboarding/Group 34489 (3).png
+    -  assets/onboarding/Group 34487 (2).png
+    -  assets/onboarding/Group 34489 (1).png
+    -  assets/onboarding/new_image.png
+    -  assets/onboarding/new_image_2.png
+    -  assets/onboarding/new_image_3.png
+    -  assets/onboarding/image.svg
+    -  assets/onboarding/image 2355.png
+    -  assets/onboarding/Mask Group.png
+    -  assets/onboarding/Frame 1.svg
+    -  assets/onboarding/Frame 1 (1).svg
+    -  assets/onboarding/apple.svg
+    -  assets/onboarding/ic_baseline-apple.svg
+    -  assets/onboarding/Address-amico 1.svg
+    -  assets/onboarding/image 4.png
+    -  assets/splash/home_logo.svg
+    -  assets/svg_images/Group 34487.svg
+    -  assets/svg_images/Group 34487_2.svg
+    -  assets/svg_images/Group 34607.svg
+    -  assets/svg_images/Group 34606.svg
+    -  assets/svg_images/Group 34611.svg
+    -  assets/svg_images/Group 34607.svg
+    -  assets/svg_images/Group 34612.svg
+    -  assets/svg_images/Group 34613.svg
+    -  assets/homescreen/Group 34308.svg
+    -  assets/homescreen/Group 34256.svg
+    -  assets/homescreen/Group 34257.svg
+    -  assets/homescreen/Group 34258.svg
+    -  assets/homescreen/image 214.png
+    -  assets/homescreen/image 213.png
+    -  assets/homescreen/Mask Group (1).png
+    -  assets/homescreen/Mask Group (2).png
+    -  assets/homescreen/Mask Group.png
+    -  assets/homescreen/1538298822.svg
+    -  assets/homescreen/Badge.svg
+    -  assets/service/ac.png
+    -  assets/service/cleaning.png
+    -  assets/subservice/ac/ac repair.png
+    -  assets/subservice/ac/ac service.png
+    -  assets/subservice/cleaning/carpet cleaning.png
+    -  assets/subservice/cleaning/home.png
+    -  assets/subservice/beauty/waxing.png
+    -  assets/subservice/beauty/pedicure.png
+    -  assets/subservice/beauty/hair_styling.png
+    -  assets/subservice/beauty/facial.png
+    -  assets/subservice/beauty/bridal_makeup.png
+    -  assets/subservice/appliances/water_purifier_repair.png
+    -  assets/subservice/appliances/oven_repair.png
+    -  assets/subservice/appliances/washing_machine_repai.png
+    -  assets/subservice/appliances/ac_repair.png
+    -  assets/subservice/appliances/fridge_repair.png
+    -  assets/subservice/painting/exterior_painting.png
+    -  assets/subservice/painting/interior_painting.png
+    -  assets/subservice/painting/texture_painting.png
+    -  assets/subservice/painting/waterproof_painting.png
+    -  assets/subservice/painting/wood-metal_painting.png
+    -  assets/subservice/cleaning/home_cleaning.png
+    -  assets/subservice/cleaning/faucet_bathroom_cleaning.png
+    -  assets/subservice/cleaning/kitchen_cleaning.png
+    -  assets/subservice/cleaning/sofa_cleaning.png
+    -  assets/subservice/plumbing/Bathroom Fittings .png
+    -  assets/subservice/plumbing/Drain Cleaning.png
+    -  assets/subservice/plumbing/Tap & Faucet Installation.png
+    -  assets/subservice/plumbing/Water Motor & Pump Repair.png
+    -  assets/subservice/plumbing/leakage_fixing.png
+    -  assets/subservice/shifting/Furniture Dismantling & Reassembly.png
+    -  assets/subservice/shifting/Local Pickup & Delivery.png
+    -  assets/subservice/shifting/Home Shifting.png
+    -  assets/subservice/shifting/Office Relocation.png
+    -  assets/subservice/shifting/Packing Services.png
+    -  assets/subservice/elecronics/CCTV & Security System Installation.png
+    -  assets/subservice/elecronics/Electrical Wiring & Fitting.png
+    -  assets/subservice/elecronics/Fan Installation.png
+    -  assets/subservice/elecronics/TV Installation & Wall Mounting.png
+    -  assets/subservice/elecronics/Light & Appliance Installation.png
+    -  assets/subservice/men_salon/Haircut & Stylin.png
+    -  assets/subservice/men_salon/Hair Coloring.png
+    -  assets/subservice/men_salon/Head & Shoulder Massage.png
+    -  assets/subservice/men_salon/Facial & Skincare.png
+    -  assets/subservice/men_salon/Beard Grooming & Trimming.png
+    -  assets/subservice/ac/uninstallation.png
+    -  assets/subservice/ac/installation.png
+    -  assets/service/beauty.png
+    -  assets/service/appliances.png
+    -  assets/service/paint.png
+    -  assets/service/plumbing.png
+    -  assets/service/electronics.png
+    -  assets/service/shifting.png
+    -  assets/service/men salon.png
+    -  assets/profile/ref.svg
