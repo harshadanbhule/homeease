@@ -95,7 +95,7 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(height: 30),
                   Text(
-                    "Welcome back you’ve \nbeen missed!",
+                    "Welcome back you've \nbeen missed!",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w600,
