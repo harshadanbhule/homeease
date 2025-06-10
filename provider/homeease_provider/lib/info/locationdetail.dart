@@ -9,7 +9,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:homeease_provider/DataBase/user_location_model.dart';
-import 'package:homeease_provider/pages/orders_page.dart';
 
 class LocationDetailsPage extends StatefulWidget {
   final String firstName;

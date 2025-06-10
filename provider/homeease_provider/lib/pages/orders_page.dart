@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homeease_provider/Custom/custom_appbar.dart';
 import 'package:homeease_provider/Custom/custom_nav_bar.dart';
 import 'package:homeease_provider/controllers/userDetail_controller.dart';
 import 'package:homeease_provider/pages/order_details_page.dart';
@@ -32,19 +33,7 @@ void initState() {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(100, 27, 180, 1),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: const Color.fromARGB(255, 255, 255, 255)),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Obx(() {
-          return Text(
-            userDetailController.serviceName.value,
-            style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255),fontWeight: FontWeight.w600),
-          );
-        }),
-      ),
+      appBar: const CustomAppBar(),
       body: FutureBuilder<List<OrderDetails>>(
         future: _orderDetailsFuture,
         builder: (context, snapshot) {
@@ -177,119 +166,191 @@ void initState() {
     );
   }
 
-  Widget _buildOrderCard(OrderDetails orderDetail) {
-    final order = orderDetail.order;
-    final user = orderDetail.user;
-    final callService = CallService();
+Widget _buildOrderCard(OrderDetails orderDetail) {
+  final order = orderDetail.order;
+  final user = orderDetail.user;
+  final callService = CallService();
 
-    return Card(
-      margin: const EdgeInsets.all(8),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OrderDetailsPage(
-                order: order,
-                user: user,
-              ),
+  return Card(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    elevation: 4,
+    child: InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OrderDetailsPage(
+              order: order,
+              user: user,
             ),
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      order.serviceName,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /// Top: Image and Basic Info Row
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// Service Image
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    order.serviceImage,
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      width: 80,
+                      height: 80,
+                      color: Colors.grey[300],
+                      child: Icon(Icons.image_not_supported, size: 40, color: Colors.grey[600]),
                     ),
                   ),
-                  if (order.isAccepted)
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        'Accepted',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                ],
-              ),
-              SizedBox(height: 12),
-              Text("Name: ${user.fullName}"),
-              if (order.isAccepted) ...[
-                SizedBox(height: 8),
-                Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.green.withOpacity(0.3)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                ),
+                SizedBox(width: 16),
+
+                /// Order Info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Icon(Icons.phone, color: Colors.green, size: 20),
-                          SizedBox(width: 8),
-                          Text(
-                            "Phone: ${user.phoneNumber}",
-                            style: TextStyle(
-                              color: Colors.green[800],
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        order.serviceName,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
                       ),
-                      ElevatedButton.icon(
-                        onPressed: () async {
-                          try {
-                            await callService.startCall(user.phoneNumber);
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Failed to start call: $e'),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          }
-                        },
-                        icon: Icon(Icons.call, color: Colors.white),
-                        label: Text('Call'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      SizedBox(height: 6),
+                      Text(
+                        'Customer: ${user.fullName}',
+                        style: TextStyle(color: Colors.grey[800]),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Quantity: ${order.quantity}',
+                        style: TextStyle(color: Colors.grey[800]),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Total: ₹${order.totalAmount.toStringAsFixed(2)}',
+                        style: TextStyle(
+                          color: Colors.deepPurple,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
                   ),
                 ),
+
+                /// Status Badge
+                if (order.isAccepted)
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      'Accepted',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                    ),
+                  ),
               ],
-              SizedBox(height: 8),
-              Text("Location: ${user.fullLocation}"),
-              Text("Coordinates: ${user.coordinates?.latitude ?? 'N/A'}, ${user.coordinates?.longitude ?? 'N/A'}"),
-              Text("Quantity: ${order.quantity}"),
-              Text("Total: ₹${order.totalAmount.toStringAsFixed(2)}"),
-              Text("Ordered on: ${order.createdAt}"),
-              Text("serviceImage : ${order.serviceImage}"),
+            ),
+
+            SizedBox(height: 12),
+
+            /// Location
+            Row(
+              children: [
+                Icon(Icons.location_on, size: 18, color: Colors.redAccent),
+                SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    user.fullLocation,
+                    style: TextStyle(color: Colors.grey[700]),
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 8),
+
+            /// Date
+            Row(
+              children: [
+                Icon(Icons.calendar_today, size: 16, color: Colors.blueAccent),
+                SizedBox(width: 6),
+                Text(
+                  'Ordered on: ${order.createdAt}',
+                  style: TextStyle(color: Colors.grey[700]),
+                ),
+              ],
+            ),
+
+            if (order.isAccepted) ...[
+              SizedBox(height: 12),
+
+              /// Phone + Call Button Section
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.green.withOpacity(0.05),
+                  border: Border.all(color: Colors.green.withOpacity(0.4)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.phone, color: Colors.green[700]),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        user.phoneNumber,
+                        style: TextStyle(
+                          color: Colors.green[900],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        try {
+                          await callService.startCall(user.phoneNumber);
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Failed to start call: $e'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      },
+                      icon: Icon(Icons.call, size: 16),
+                      label: Text('Call'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        textStyle: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
-          ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
+
 }
