@@ -56,7 +56,7 @@ class _SplashState extends State<Splash_2> {
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width-80,
                     child: Text(
-                      "Finding and connecting with trusted local professionals around you.",
+                      "Your skills. Their needs. One platform",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.darkerGrotesque(
                         color: Color.fromRGBO(224, 209, 240, 1),
@@ -85,7 +85,7 @@ class _SplashState extends State<Splash_2> {
                         color: Colors.white,
                       ),
                       child: Text(
-                        "Sign up to HomeEase",
+                        "Sign up to Homies",
                         style: GoogleFonts.inter(
                           color: Color.fromRGBO(100, 27, 180, 1),
                           fontSize: 13,

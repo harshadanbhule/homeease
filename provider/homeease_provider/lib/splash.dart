@@ -66,7 +66,7 @@ class _SplashState extends State<Splash> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SvgPicture.asset("assets/splash/home_logo.svg"),
-              Text("HOMEEASE",style: GoogleFonts.robotoCondensed(fontSize: 48,fontWeight: FontWeight.w700,color: Colors.white),)
+              Text("HOMIES",style: GoogleFonts.robotoCondensed(fontSize: 48,fontWeight: FontWeight.w700,color: Colors.white),)
           ],),
            SizedBox(
     height: 30,

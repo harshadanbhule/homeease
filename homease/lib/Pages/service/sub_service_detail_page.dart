@@ -543,6 +543,25 @@ class _SubServiceDetailPageState extends State<SubServiceDetailPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
+                style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                      Colors.deepPurple,
+                                    ),
+                                foregroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                      Colors.white,
+                                    ),
+                                shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder
+                                >(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      12,
+                                    ), // set corner radius
+                                  ),
+                                ),
+                              ),
                 onPressed: () {
                   _razorpay.open({
                     'key': 'rzp_test_Eo4qwNPYiMKynU',

@@ -112,7 +112,7 @@ class _Page1State extends State<Page1> {
                     height: 115,
                     width: 300,
                     child: Text(
-                      "Beauty parlour at your home",
+                      "Bring the salon to them!",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.interTight(
                         fontWeight: FontWeight.bold,
@@ -128,7 +128,7 @@ class _Page1State extends State<Page1> {
                     child: SizedBox(
                       width: MediaQuery.sizeOf(context).width - 30,
                       child: Text(
-                        "Experience salon-quality beauty treatments in the comfort of your own home.",
+                        "Serve clients with premium beauty care in the comfort of their home.",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.interTight(
                           fontSize: 15,

@@ -97,7 +97,7 @@ class _Page2State extends State<Page2> {
                     height: 115,
                     width: 300,
                     child: Text(
-                      "Plumber & expert nearby you",
+                      "Top plumber nearby ",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.interTight(
                         fontWeight: FontWeight.bold,
@@ -112,7 +112,7 @@ class _Page2State extends State<Page2> {
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width - 30,
                     child: Text(
-                      "Find trusted plumbers and experts near you for quick and reliable service.",
+                      "Deliver expert service and build trust with local customers.",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.interTight(
                         fontSize: 15,

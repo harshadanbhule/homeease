@@ -111,14 +111,8 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
 
-                const SizedBox(height: 8),
-                const Text(
-                  'Here’s your job summary for today.',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-                const SizedBox(height: 20),
 
                 const Text(
                   'Quick Actions',

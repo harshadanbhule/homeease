@@ -89,7 +89,7 @@ void initState() {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.pending_actions,color: Colors.white,),
-                            SizedBox(width: 8),
+                            SizedBox(width: 2),
                             Text('Pending Orders',style: TextStyle(color: Colors.white),),
                             if (pendingOrders.isNotEmpty)
                               Container(
@@ -112,11 +112,11 @@ void initState() {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.check_circle,color: Colors.white,),
-                            SizedBox(width: 8),
+                            SizedBox(width: 1),
                             Text('Accepted Orders',style: TextStyle(color: Colors.white),),
                             if (acceptedOrders.isNotEmpty)
                               Container(
-                                margin: EdgeInsets.only(left: 8),
+                                margin: EdgeInsets.only(left: 1),
                                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                 decoration: BoxDecoration(
                                   color: Colors.green,

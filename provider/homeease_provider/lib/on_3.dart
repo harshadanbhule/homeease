@@ -93,7 +93,7 @@ class _Page3State extends State<Page3> {
                     height: 115,
                     width: 300,
                     child: Text(
-                      "Professional home cleaning",
+                      "Bring shine to homes near you",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.interTight(
                         fontWeight: FontWeight.bold,
@@ -105,7 +105,7 @@ class _Page3State extends State<Page3> {
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width - 30,
                     child: Text(
-                      "Experience a spotless home with professional cleaning services at your doorstep.",
+                      "Provide spotless results and satisfaction to homes in your area.",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.interTight(
                         fontSize: 15,

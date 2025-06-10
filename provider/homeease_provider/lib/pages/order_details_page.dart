@@ -460,7 +460,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                           ElevatedButton.icon(
                             onPressed: _startCall,
                             icon: Icon(Icons.call, color: Colors.white),
-                            label: Text('Call Customer'),
+                            label: Text('Call'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green,
                               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
