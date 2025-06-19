@@ -441,139 +441,143 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
             // Customer Details Section
             Card(
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  margin: EdgeInsets.all(16),
+  child: Padding(
+    padding: EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Responsive Row
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Text(
+                'Customer Details',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            if (isAccepted)
+              ElevatedButton.icon(
+                onPressed: _startCall,
+                icon: Icon(Icons.call, color: Colors.white),
+                label: Text('Call'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                ),
+              ),
+          ],
+        ),
+        SizedBox(height: 16),
+        Text('Name: ${widget.user.fullName}'),
+        if (isAccepted) ...[
+          SizedBox(height: 8),
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.green.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.green.withOpacity(0.3)),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.phone, color: Colors.green, size: 20),
+                SizedBox(width: 8),
+                Text(
+                  "Phone: ${widget.user.phoneNumber}",
+                  style: TextStyle(
+                    color: Colors.green[800],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+        SizedBox(height: 16),
+        Text('Address: ${widget.user.fullLocation}'),
+        if (widget.user.coordinates != null) ...[
+          SizedBox(height: 16),
+          Text(
+            'Location Coordinates:',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text('Latitude: ${widget.user.coordinates!.latitude}'),
+          Text('Longitude: ${widget.user.coordinates!.longitude}'),
+          if (distance != null) ...[
+            SizedBox(height: 8),
+            Text(
+              'Distance: ${(distance! / 1000).toStringAsFixed(2)} km',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+          ],
+          SizedBox(height: 16),
+          Container(
+            height: 300,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.grey),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : FlutterMap(
+                      options: MapOptions(
+                        center: widget.user.coordinates,
+                        zoom: 12.0,
+                      ),
                       children: [
-                        Text(
-                          'Customer Details',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        TileLayer(
+                          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          userAgentPackageName: 'com.example.app',
                         ),
-                        if (isAccepted)
-                          ElevatedButton.icon(
-                            onPressed: _startCall,
-                            icon: Icon(Icons.call, color: Colors.white),
-                            label: Text('Call'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        MarkerLayer(
+                          markers: [
+                            Marker(
+                              point: widget.user.coordinates!,
+                              width: 40,
+                              height: 40,
+                              child: Icon(Icons.location_pin, size: 40, color: Colors.red),
                             ),
+                            if (currentLocation != null)
+                              Marker(
+                                point: currentLocation!,
+                                width: 40,
+                                height: 40,
+                                child: Icon(Icons.my_location, size: 40, color: Colors.blue),
+                              ),
+                          ],
+                        ),
+                        if (currentLocation != null && widget.user.coordinates != null)
+                          PolylineLayer(
+                            polylines: [
+                              Polyline(
+                                points: [currentLocation!, widget.user.coordinates!],
+                                color: Colors.blue,
+                                strokeWidth: 2,
+                              ),
+                            ],
                           ),
                       ],
                     ),
-                    SizedBox(height: 16),
-                    Text('Name: ${widget.user.fullName}'),
-                    if (isAccepted) ...[
-                      SizedBox(height: 8),
-                      Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.green.withOpacity(0.3)),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(Icons.phone, color: Colors.green, size: 20),
-                            SizedBox(width: 8),
-                            Text(
-                              "Phone: ${widget.user.phoneNumber}",
-                              style: TextStyle(
-                                color: Colors.green[800],
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                    SizedBox(height: 16),
-                    Text('Address: ${widget.user.fullLocation}'),
-                    if (widget.user.coordinates != null) ...[
-                      SizedBox(height: 16),
-                      Text(
-                        'Location Coordinates:',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text('Latitude: ${widget.user.coordinates!.latitude}'),
-                      Text('Longitude: ${widget.user.coordinates!.longitude}'),
-                      if (distance != null) ...[
-                        SizedBox(height: 8),
-                        Text(
-                          'Distance: ${(distance! / 1000).toStringAsFixed(2)} km',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ],
-                      SizedBox(height: 16),
-                      Container(
-                        height: 300,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: isLoading
-                              ? Center(child: CircularProgressIndicator())
-                              : FlutterMap(
-                                  options: MapOptions(
-                                    center: widget.user.coordinates,
-                                    zoom: 12.0,
-                                  ),
-                                  children: [
-                                    TileLayer(
-                                      urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                      userAgentPackageName: 'com.example.app',
-                                    ),
-                                    MarkerLayer(
-                                      markers: [
-                                        // Customer location marker
-                                        Marker(
-                                          point: widget.user.coordinates!,
-                                          width: 40,
-                                          height: 40,
-                                          child: Icon(Icons.location_pin, size: 40, color: Colors.red),
-                                        ),
-                                        // Current location marker (if available)
-                                        if (currentLocation != null)
-                                          Marker(
-                                            point: currentLocation!,
-                                            width: 40,
-                                            height: 40,
-                                            child: Icon(Icons.my_location, size: 40, color: Colors.blue),
-                                          ),
-                                      ],
-                                    ),
-                                    // Draw a line between current location and customer location
-                                    if (currentLocation != null && widget.user.coordinates != null)
-                                      PolylineLayer(
-                                        polylines: [
-                                          Polyline(
-                                            points: [currentLocation!, widget.user.coordinates!],
-                                            color: Colors.blue,
-                                            strokeWidth: 2,
-                                          ),
-                                        ],
-                                      ),
-                                  ],
-                                ),
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
             ),
+          ),
+        ],
+      ],
+    ),
+  ),
+)
+,
           ],
         ),
       ),
